@@ -1,0 +1,6 @@
+/campus-gang-web-master/dist/
+/campus-gang-web-master/node_modules/
+/campus-gang-api-master/target/
+.idea
+node_modules
+*.iml

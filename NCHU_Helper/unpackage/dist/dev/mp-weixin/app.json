@@ -1,0 +1,53 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/orders/orders",
+    "pages/me/me",
+    "pages/login/login",
+    "pages/register/register",
+    "pages/preOrder/preOrder",
+    "pages/address/address",
+    "pages/detail/detail",
+    "pages/introduce/introduce",
+    "pages/aggrement/aggrement",
+    "pages/person/person",
+    "pages/certification/certification",
+    "pages/acceptOrders/acceptOrders",
+    "pages/records/records",
+    "pages/wallet/wallet",
+    "pages/charge/charge"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "NCHU校内帮",
+    "navigationBarBackgroundColor": "#006eff",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "backgroundColor": "#fff",
+    "selectedColor": "#006eff",
+    "color": "#666",
+    "list": [
+      {
+        "iconPath": "/static/icons/home.png",
+        "selectedIconPath": "static/icons/home-active.png",
+        "text": "首页",
+        "pagePath": "pages/index/index"
+      },
+      {
+        "iconPath": "/static/icons/orders.png",
+        "selectedIconPath": "static/icons/orders-active.png",
+        "text": "订单",
+        "pagePath": "pages/orders/orders"
+      },
+      {
+        "iconPath": "/static/icons/me.png",
+        "selectedIconPath": "static/icons/me-active.png",
+        "text": "我的",
+        "pagePath": "pages/me/me"
+      }
+    ]
+  },
+  "usingComponents": {}
+}

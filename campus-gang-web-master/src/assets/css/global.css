@@ -1,0 +1,16 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-size: 14px;
+}
+a {
+    text-decoration: none;
+}
+
+.box {
+    background-color: #fff;
+    margin-bottom: 18px;
+    line-height: 32px;
+}

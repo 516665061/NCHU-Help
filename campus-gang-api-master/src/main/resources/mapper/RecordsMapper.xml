@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.RecordsMapper">
+
+    <sql id="Base_Column_List">
+        id,content,money,user_id,time,type
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.Records">
+        select
+        records.*, user.name as userName
+        from records
+        left join user
+        on records.user_id = user.id
+        <where>
+            <if test="userName != null"> and user.name like concat('%', #{userName}, '%')</if>
+            <if test="userId != null"> and records.user_id = #{userId}</if>
+            <if test="time != null"> and records.time like concat(#{time}, '%')</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Records">
+        select
+        <include refid="Base_Column_List" />
+        from records
+        where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from records
+        where  id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Records" useGeneratedKeys="true">
+        insert into records
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="content != null">content,</if>
+            <if test="money != null">money,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="time != null">time,</if>
+            <if test="type != null">type,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="content != null">#{content},</if>
+            <if test="money != null">#{money},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="time != null">#{time},</if>
+            <if test="type != null">#{type},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Records">
+        update records
+        <set>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="money != null">
+                money = #{money},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

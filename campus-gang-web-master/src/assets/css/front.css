@@ -1,0 +1,187 @@
+.front-container {
+    min-height: 100vh;
+}
+.front-notice {
+    padding: 5px 20px;
+    color: #666;
+    font-size: 12px
+}
+.front-header {
+    display: flex;
+    height: 60px;
+    line-height: 60px;
+    border-bottom: 1px solid #eee;
+}
+.front-header-left {
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+}
+.front-header-left img, .front-header-dropdown img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%
+}
+.front-header-left .title {
+    flex: 1;
+    color: #409EFF;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+.front-header-center {
+    flex: 1;
+}
+.front-header-nav{
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+.front-header-right {
+    padding-right: 20px;
+    text-align: right;
+}
+.front-header-dropdown {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+.front-footer {
+    width: 100%;
+    background-color: #fff;
+    padding: 20px 0;
+    height: 100px;
+    border-top: 1px solid #eee;
+}
+
+.el-dropdown-menu {
+    width: 100px !important;
+    text-align: center !important;
+}
+
+/*页面具体样式自定义*/
+.front-home {
+    width: 100%;
+}
+
+.main-content {
+    width: 70%;
+    margin: 10px auto 0;
+}
+
+/* ElementUI 样式覆盖 */
+.el-menu.el-menu--horizontal {
+    border: none !important;
+    height: 59px;
+}
+
+.el-menu-item:hover {
+    background-color: #e6f1ff !important;
+    color: #409eff;
+}
+
+.el-submenu__title:hover {
+    background-color: #e6f1ff !important;
+}
+
+.service_title {
+    width: 100%;
+    margin-top: 40px;
+    font-size: 40px;
+    color: #409eff;
+    font-weight: bold;
+    text-align: center;
+}
+
+.service_sub_title {
+    width: 100%;
+    font-size: 30px;
+    color: #AAAAAA;
+    font-weight: bold;
+    text-align: center;
+}
+
+.solution-list {
+    margin: 98px auto 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.solution-list .solution-item {
+    width: 21.25%;
+    height: 300px;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 32px 8px #F4F4F4;
+    padding: 39px 19px 0 19px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.solution-list .solution-item .image {
+    width: 122px;
+    height: 122px;
+}
+
+.solution-list .solution-item .image img {
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.solution-list .solution-item .headline {
+    height: 25px;
+    font-size: 20px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #333333;
+    line-height: 30px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.solution-list .solution-item .content {
+    height: 96px;
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #666666;
+    line-height: 24px;
+}
+
+.index_footer {
+    width: 100%;
+    height: auto;
+}
+
+.table {
+    height: 40vh;
+    overflow: hidden;
+}
+
+.wallet {
+    border: 1px solid #409EFF;
+    padding: 10px 0;
+    margin-bottom: 5px;
+    text-align: center;
+    font-size: 18px;
+    color: #409EFF;
+    border-radius: 5px;
+    cursor: pointer;
+
+}
+
+.wallet:hover {
+    background-color: #e6f1ff;
+    color: #409EFF;
+}
+
+.el-col .active {
+    background-color: #409EFF;
+    color: white;
+    border-color: #409EFF;
+}

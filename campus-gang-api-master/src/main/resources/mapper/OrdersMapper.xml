@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.OrdersMapper">
+
+    <sql id="Base_Column_List">
+        id,order_no,name,descr,img,type,weight,price,service_charge,user_id,accept_id,time,accept_time,expect_time,arrive_time,status,address_id,target_id,comment
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.Orders">
+        select
+        orders.*, user1.name as userName, user2.name as acceptName, address1.address as pickAddress, address2.address as receiveAddress
+        from orders
+        left join user user1
+        on orders.user_id = user1.id
+        left join user user2
+        on orders.accept_id = user2.id
+        left join address address1
+        on orders.address_id = address1.id
+        left join address address2
+        on orders.target_id = address2.id
+        <where>
+            <if test="orderNo != null"> and orders.order_no = #{orderNo}</if>
+            <if test="name != null"> and orders.name like concat('%', #{name}, '%')</if>
+            <if test="status != null"> and orders.status = #{status}</if>
+            <if test="userId != null"> and orders.user_id = #{userId}</if>
+            <if test="acceptId != null"> and orders.accept_id = #{acceptId}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Orders">
+        select
+        <include refid="Base_Column_List" />
+        from orders
+        where id = #{id}
+    </select>
+
+    <select id="list" resultType="com.example.entity.Orders">
+        select
+        <include refid="Base_Column_List"></include>
+        from orders
+        <where>
+            <if test="startTime != null and endTime != null">SUBSTR(time,1,10) between #{startTime} and #{endTime}</if>
+        </where>
+    </select>
+
+    <delete id="deleteById">
+        delete from orders
+        where  id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Orders" useGeneratedKeys="true">
+        insert into orders
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orderNo != null">order_no,</if>
+            <if test="name != null">name,</if>
+            <if test="descr != null">descr,</if>
+            <if test="img != null">img,</if>
+            <if test="type != null">type,</if>
+            <if test="weight != null">weight,</if>
+            <if test="price != null">price,</if>
+            <if test="serviceCharge != null">service_charge,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="acceptId != null">accept_id,</if>
+            <if test="time != null">time,</if>
+            <if test="acceptTime != null">accept_time,</if>
+            <if test="expectTime != null">expect_time,</if>
+            <if test="arriveTime != null">arrive_time,</if>
+            <if test="status != null">status,</if>
+            <if test="addressId != null">address_id,</if>
+            <if test="targetId != null">target_id,</if>
+            <if test="comment != null">comment,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="name != null">#{name},</if>
+            <if test="descr != null">#{descr},</if>
+            <if test="img != null">#{img},</if>
+            <if test="type != null">#{type},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="price != null">#{price},</if>
+            <if test="serviceCharge != null">#{serviceCharge},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="acceptId != null">#{acceptId},</if>
+            <if test="time != null">#{time},</if>
+            <if test="acceptTime != null">#{acceptTime},</if>
+            <if test="expectTime != null">#{expectTime},</if>
+            <if test="arriveTime != null">#{arriveTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="addressId != null">#{addressId},</if>
+            <if test="targetId != null">#{targetId},</if>
+            <if test="comment != null">#{comment},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Orders">
+        update orders
+        <set>
+            <if test="orderNo != null">
+                order_no = #{orderNo},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="descr != null">
+                descr = #{descr},
+            </if>
+            <if test="img != null">
+                img = #{img},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="weight != null">
+                weight = #{weight},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="serviceCharge != null">
+                service_charge = #{serviceCharge},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="acceptId != null">
+                accept_id = #{acceptId},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+            <if test="acceptTime != null">
+                accept_time = #{acceptTime},
+            </if>
+            <if test="acceptTime != null">
+                expect_time = #{expectTime},
+            </if>
+            <if test="arriveTime != null">
+                arrive_time = #{arriveTime},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="addressId != null">
+                address_id = #{addressId},
+            </if>
+            <if test="targetId != null">
+                target_id = #{targetId},
+            </if>
+            <if test="comment != null">
+                comment = #{comment},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

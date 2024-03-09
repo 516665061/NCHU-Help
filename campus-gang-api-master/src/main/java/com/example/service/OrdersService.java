@@ -1,0 +1,162 @@
+package com.example.service;
+
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.IdUtil;
+import com.example.common.enums.OrderStatusEnum;
+import com.example.common.enums.RecordsTypeEnum;
+import com.example.common.enums.ResultCodeEnum;
+import com.example.entity.*;
+import com.example.exception.CustomException;
+import com.example.mapper.OrdersMapper;
+import com.example.utils.TokenUtils;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * 功能
+ * 作者：封延民
+ * 日期：2023/12/7 17:35
+ */
+@Service
+public class OrdersService {
+    @Resource
+    private OrdersMapper ordersMapper;
+
+    @Resource
+    private AddressService addressService;
+
+    @Resource
+    private UserService userService;
+
+    @Resource
+    CertificationService certificationService;
+    /**
+     * 新增
+     */
+    public void add(Orders orders) {
+        ordersMapper.insert(orders);
+    }
+
+    /**
+     * 删除
+     */
+    public void deleteById(Integer id) {
+        ordersMapper.deleteById(id);
+    }
+
+    /**
+     * 批量删除
+     */
+    public void deleteBatch(List<Integer> ids) {
+        for (Integer id : ids) {
+            ordersMapper.deleteById(id);
+        }
+    }
+
+    /**
+     * 修改
+     */
+    @Transactional
+    public void updateById(Orders orders) {
+        if (OrderStatusEnum.NO_COMMENT.getValue().equals(orders.getStatus())) {
+            // 用户确认收货了
+            //  打钱
+            Integer acceptId = orders.getAcceptId();
+            User user = userService.selectById(acceptId);
+            user.setAccount(user.getAccount().add(BigDecimal.valueOf(orders.getPrice())));
+            userService.updateById(user);
+            // 记录收支明细
+            RecordsService.addRecord(user,"接单" + orders.getName(), BigDecimal.valueOf(orders.getPrice()), RecordsTypeEnum.INCOME.getValue());
+        } else if (OrderStatusEnum.CANCEL.getValue().equals(orders.getStatus())) {
+            //用户取消订单了
+            //取消订单后需要归还用户金额
+            User user = userService.selectById(orders.getUserId());
+            user.setAccount(user.getAccount().add(BigDecimal.valueOf(orders.getPrice()+orders.getServiceCharge())));
+            userService.updateById(user);
+            //  打钱
+            RecordsService.addRecord(user,"取消订单" + orders.getName(), BigDecimal.valueOf(orders.getPrice()+orders.getServiceCharge()), RecordsTypeEnum.CANCEL.getValue());
+        } else if (OrderStatusEnum.NO_RECEIVE.getValue().equals(orders.getStatus())) {
+            orders.setArriveTime(DateUtil.now());
+        }
+        ordersMapper.updateById(orders);
+    }
+
+    /**
+     * 根据ID查询
+     */
+    public Orders selectById(Integer id) {
+        Orders orders = ordersMapper.selectById(id);
+        Address address = addressService.selectById(orders.getAddressId());
+        orders.setAddress(address);
+        Address targetAddress = addressService.selectById(orders.getTargetId());
+        orders.setTargetAddress(targetAddress);
+
+        Certification certification = certificationService.selectByUserId(orders.getAcceptId());
+        orders.setCertification(certification);
+        return orders;
+    }
+
+    /**
+     * 查询所有
+     */
+    public List<Orders> selectAll(Orders orders) {
+        List<Orders> ordersList = ordersMapper.selectAll(orders);
+        for (Orders o:ordersList){
+            Date date = new Date();
+            int minutes = (int)DateUtil.between(DateUtil.parseDateTime(o.getTime()),date, DateUnit.MINUTE);
+            o.setMinutes(minutes);
+        }
+        return ordersList;
+    }
+
+    /**
+     * 分页查询
+     */
+    public PageInfo<Orders> selectPage(Orders orders, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Orders> list = ordersMapper.selectAll(orders);
+        return PageInfo.of(list);
+    }
+
+    public void addOrder(Orders orders) {
+        Account currentUser = TokenUtils.getCurrentUser();
+        BigDecimal account = currentUser.getAccount();
+        Double price = orders.getPrice() + orders.getServiceCharge();
+        if (price > account.doubleValue()) {
+            throw new CustomException(ResultCodeEnum.ACCOUNT_LIMIT_ERROR);
+        }
+        // 更新账户余额
+        currentUser.setAccount(account.subtract(BigDecimal.valueOf(price)));
+        userService.updateById((User) currentUser);
+
+        orders.setUserId(currentUser.getId());
+        orders.setOrderNo(IdUtil.getSnowflakeNextIdStr());  // 设置唯一的订单编号
+        orders.setStatus(OrderStatusEnum.NO_ACCEPT.getValue());
+        orders.setTime(DateUtil.now());
+        ordersMapper.insert(orders);
+
+        //  记录收支明细
+        RecordsService.addRecord(currentUser,"下单" + orders.getName(),BigDecimal.valueOf(price), RecordsTypeEnum.OUT.getValue());
+    }
+
+    public void accept(Orders orders) {
+        Account currentUser = TokenUtils.getCurrentUser();  // 骑手用户
+        orders.setAcceptId(currentUser.getId());
+        orders.setAcceptTime(DateUtil.now());
+        orders.setStatus(OrderStatusEnum.NO_ARRIVE.getValue());
+        this.updateById(orders);
+    }
+
+
+    public List<Orders> list(String startTime, String endTime) {
+        return ordersMapper.list(startTime, endTime);
+    }
+}

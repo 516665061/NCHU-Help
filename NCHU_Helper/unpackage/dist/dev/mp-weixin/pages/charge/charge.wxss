@@ -1,0 +1,17 @@
+
+.charge-item {
+	border: 1px solid #ccc;
+	padding: 40rpx 0;
+	margin-bottom: 10rpx;
+	text-align: center;
+	font-size: 36rpx;
+	color: #888;
+	border-radius: 5rpx;
+	cursor: pointer;
+}
+.active {
+	background-color: #f94b4b;
+	color: white;
+	border-color: #f94b4b;
+}
+

@@ -1,0 +1,15 @@
+
+.line {
+	display: flex;
+	margin-bottom: 10rpx;
+	grid-gap: 10rpx;
+}
+.line-title {
+	width: 200rpx;
+	font-weight: bold;
+	text-align: right;
+}
+.line-content {
+	flex: 1;
+}
+
