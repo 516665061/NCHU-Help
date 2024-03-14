@@ -52,7 +52,21 @@
     <el-dialog title="信息" :visible.sync="fromVisible" width="40%" :close-on-click-modal="false" destroy-on-close>
       <el-form label-width="100px" style="padding-right: 50px" :model="form" :rules="rules" ref="formRef">
         <el-form-item prop="image" label="图片">
-          <el-input v-model="form.image" autocomplete="off"></el-input>
+          <el-upload
+              class="avatar-uploader"
+              :action="$baseUrl + '/files/upload'"
+              :show-file-list="false"
+              :before-upload="beforeAvatarUpload"
+              :on-success="handleAvatarSuccess"
+          >
+            <el-image
+                style="width: auto; height: 100px"
+                v-if="form.image"
+                :src="form.image"
+                :fit="fit">
+            </el-image>
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
         </el-form-item>
         <el-form-item prop="url" label="地址">
           <el-input type="textarea" :rows="5" v-model="form.url" autocomplete="off"></el-input>
@@ -96,6 +110,17 @@ export default {
     this.load(1)
   },
   methods: {
+    beforeAvatarUpload(file) {
+      const format = file.type === 'image/jpeg'|| 'image/png';
+      if (!format) {
+        this.$message.error('上传图片只能是 JPG/PNG 格式!');
+      }
+      return format;
+    },
+    handleAvatarSuccess(response, file, fileList) {
+      // 把user的头像属性换成上传的图片的链接
+      this.$set(this.form, 'image', response.data)
+    },
     handleAdd() {   // 新增数据
       this.form = {}  // 新增数据的时候清空数据
       this.fromVisible = true   // 打开弹窗
@@ -181,5 +206,32 @@ export default {
 </script>
 
 <style scoped>
-
+/deep/ .el-statistic .con span {
+  display: inline-block;
+  margin: 0;
+  line-height: 100%;
+  color: red;
+}
+/deep/.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+/deep/.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 120px;
+  height: 120px;
+  line-height: 120px;
+  text-align: center;
+}
+.avatar {
+  width: 120px;
+  height: 120px;
+  display: block;
+}
 </style>
