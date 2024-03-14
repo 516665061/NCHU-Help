@@ -27,6 +27,11 @@
           <el-input v-model="form.studentNo" placeholder="请输入学号" v-if="form.status != '通过'"></el-input>
           <el-input v-model="form.studentNo" :disabled="true" v-if="form.status === '通过'"></el-input>
         </el-form-item>
+        <el-form-item label="示例">
+          <template>
+            <el-image :src="require('@/assets/imgs/cer.jpg')" style="width: 160px; height: 120px; border-radius: 5px" :preview-src-list="[require('@/assets/imgs/cer.jpg')]"></el-image>
+          </template>
+        </el-form-item>
         <el-form-item label="证件照片" prop="card" required>
           <el-upload
               class="avatar-uploader"
