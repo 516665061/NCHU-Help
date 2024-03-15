@@ -6,6 +6,7 @@ import com.example.common.enums.RecordsTypeEnum;
 import com.example.common.enums.ResultCodeEnum;
 import com.example.common.enums.RoleEnum;
 import com.example.entity.Account;
+import com.example.entity.Admin;
 import com.example.entity.Certification;
 import com.example.entity.User;
 import com.example.exception.CustomException;
@@ -117,5 +118,17 @@ public class UserService {
 
         //  记录收支明细
         RecordsService.addRecord(currentUser,"充值" ,BigDecimal.valueOf(money),RecordsTypeEnum.CHARGE.getValue());
+    }
+
+    public void updatePassword(Account account) {
+        User dbUser = userMapper.selectByUsername(account.getUsername());
+        if (ObjectUtil.isNull(dbUser)) {
+            throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
+        }
+        if (!account.getPassword().equals(dbUser.getPassword())) {
+            throw new CustomException(ResultCodeEnum.PARAM_PASSWORD_ERROR);
+        }
+        dbUser.setPassword(account.getNewPassword());
+        userMapper.updateById(dbUser);
     }
 }

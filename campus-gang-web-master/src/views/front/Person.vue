@@ -94,7 +94,7 @@ export default {
   methods: {
     update() {
       // 保存当前的用户信息到数据库
-      this.$request.put('/admin/update', this.user).then(res => {
+      this.$request.put('/user/update', this.user).then(res => {
         if (res.code === '200') {
           // 成功更新
           this.$message.success('保存成功')
@@ -129,6 +129,7 @@ export default {
           this.$request.put('/updatePassword', this.user).then(res => {
             if (res.code === '200') {
               // 成功更新
+              localStorage.removeItem('xm-user')   // 清除缓存的用户信息
               this.$message.success('修改密码成功')
               this.$router.push('/login')
             } else {
