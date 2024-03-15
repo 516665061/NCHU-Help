@@ -104,10 +104,10 @@ public class WebController {
         List<Dict> lineList = new ArrayList<>();
         for (String time : timeList) {
             //统计当前日期的所有金额总数和
-            Double sum = list.stream().filter(orders -> orders.getTime().substring(0, 10).equals(time)).
+            Double sum = list.stream().filter(orders -> orders.getTime().substring(0, 10).equals(time) && !(orders.getStatus().equals("待接单") || orders.getStatus().equals("已取消"))).
                     map(Orders::getPrice).reduce(Double::sum).orElse(0.0);
             Long amount = list.stream().filter(orders -> orders.getTime().substring(0, 10).equals(time) && !(orders.getStatus().equals("待接单") || orders.getStatus().equals("已取消"))).count();
-            Double profit = list.stream().filter(orders -> orders.getTime().substring(0, 10).equals(time)).
+            Double profit = list.stream().filter(orders -> orders.getTime().substring(0, 10).equals(time) && !(orders.getStatus().equals("待接单") || orders.getStatus().equals("已取消"))).
                     map(Orders::getServiceCharge).reduce(Double::sum).orElse(0.0);
             Dict dict = Dict.create();
             Dict line = dict.set("time", time).set("value", sum).set("amount", amount).set("profit",profit);

@@ -128,19 +128,58 @@ const sales = {
       name: '销售额',
       data: [],
       type: 'line',
-      smooth: true
+      smooth: true,
+      lineStyle: {
+        normal: {
+          color: '#FD9E06'
+        }
+      },
+      itemStyle: {
+        normal: {
+          color: '#FD9E06'
+        }
+      },
     },
     {
       name: '销量',
       data: [],
       type: 'bar',
-      smooth: true
+      barWidth: 35,
+      itemStyle: {
+        barBorderRadius: [2, 2, 0, 0], //柱体圆角
+        color: new echarts.graphic.LinearGradient(
+            //前四个参数用于配置渐变色的起止位置，这四个参数依次对应 右下左上 四个方位。也就是从右边开始顺时针方向。
+            //通过修改前4个参数，可以实现不同的渐变方向
+            /*第五个参数则是一个数组，用于配置颜色的渐变过程。
+              每项为一个对象，包含offset和color两个参数
+            */
+            0, 1, 0, 0, [{//代表渐变色从正上方开始
+              offset: 0, //offset范围是0~1，用于表示位置，0是指0%处的颜色
+              color: '#409EFF'
+            }, //柱图渐变色
+              {
+                offset: 1, //指100%处的颜色
+                color: '#b3d8ff'
+              }
+            ]
+        ),
+      }
     },
     {
       name: '盈利',
       data: [],
       type: 'line',
-      smooth: true
+      smooth: true,
+      lineStyle: {
+        normal: {
+          color: '#228B22'
+        }
+      },
+      itemStyle: {
+        normal: {
+          color: '#228B22'
+        }
+      },
     }
   ]
 }
@@ -314,7 +353,7 @@ export default {
      text-align: center;
      position: absolute;
      top: -20px;
-     font-size: 24px;
+     font-size: 30px;
    }
    .total-box--1 {
      background-image: linear-gradient(to bottom right, #f3af19, #ea6439);

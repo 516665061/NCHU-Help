@@ -42,13 +42,13 @@
             <template slot="title">
               <i class="el-icon-menu"></i><span>信息管理</span>
             </template>
+            <el-menu-item index="/admin/slides">幻灯片管理</el-menu-item>
             <el-menu-item index="/admin/orders">订单信息</el-menu-item>
             <el-menu-item index="/admin/address">地址信息</el-menu-item>
             <el-menu-item index="/admin/certification">骑手认证</el-menu-item>
             <el-menu-item index="/admin/records">收支明细</el-menu-item>
             <el-menu-item index="/admin/notice">公告信息</el-menu-item>
             <el-menu-item index="/admin/comment">评价管理</el-menu-item>
-            <el-menu-item index="/admin/slides">幻灯片管理</el-menu-item>
           </el-submenu>
 
           <el-submenu index="user">
