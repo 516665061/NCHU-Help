@@ -17,7 +17,11 @@
       <el-table :data="tableData" strip @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center"></el-table-column>
         <el-table-column prop="id" label="序号" width="70" align="center" sortable></el-table-column>
-        <el-table-column prop="content" label="评论"></el-table-column>
+        <el-table-column prop="content" label="评论">
+          <template v-slot="scope">
+            {{ scope.row.content || '该用户未做出评价' }}
+          </template>
+        </el-table-column>
         <el-table-column prop="star" label="评分">
           <template v-slot="scope">
             <el-rate v-model="scope.row.star" disabled></el-rate>
