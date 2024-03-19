@@ -15,6 +15,14 @@
             <el-option label="管理员" value="ADMIN"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item prop="code">
+          <div style="display: flex">
+            <el-input placeholder="请输入验证码(注意区分大小写)" prefix-icon="el-icon-circle-check" size="medium" style="flex: 1" v-model="form.code"></el-input>
+            <div style="flex: 1; height: 36px">
+              <valid-code @update:value="getCode" />
+            </div>
+          </div>
+        </el-form-item>
         <el-form-item>
           <el-button style="width: 100%; background-color: #409EFF; border-color: #409EFF; color: white" @click="login">登 录</el-button>
         </el-form-item>
@@ -30,11 +38,26 @@
 </template>
 
 <script>
+import ValidCode from "@/views/ValidCode.vue";
+
 export default {
   name: "Login",
+  components: {
+    ValidCode
+  },
   data() {
+    const validateCode = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入验证码'))
+      } else if (value !== this.code) {
+        callback(new Error('验证码错误'))
+      } else {
+        callback()
+      }
+    }
     return {
-      form: { role: 'USER' },
+      code: '',  // 验证码组件传递过来的code
+      form: { role: 'USER', code:''},
       rules: {
         username: [
           { required: true, message: '请输入账号', trigger: 'blur' },
@@ -44,6 +67,9 @@ export default {
         ],
         role: [
           { required: true, message: '请选择登录类型', trigger: 'change' },
+        ],
+        code: [
+          { validator: validateCode, trigger: 'blur' }
         ]
       }
     }
@@ -52,6 +78,9 @@ export default {
 
   },
   methods: {
+    getCode(code) {
+      this.code = code
+    },
     login() {
       this.$refs['formRef'].validate((valid) => {
         if (valid) {

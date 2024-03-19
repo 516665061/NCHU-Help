@@ -12,6 +12,14 @@
         <el-form-item prop="confirmPass">
           <el-input prefix-icon="el-icon-lock" placeholder="请确认密码" show-password  v-model="form.confirmPass"></el-input>
         </el-form-item>
+        <el-form-item prop="code">
+        <div style="display: flex">
+          <el-input placeholder="请输入验证码(注意区分大小写)" prefix-icon="el-icon-circle-check" size="medium" style="flex: 1" v-model="form.code"></el-input>
+          <div style="flex: 1; height: 36px">
+            <valid-code @update:value="getCode" />
+          </div>
+        </div>
+        </el-form-item>
         <el-form-item>
           <el-button style="width: 100%; background-color: #409EFF; border-color: #409EFF; color: white" @click="register">注 册</el-button>
         </el-form-item>
@@ -27,8 +35,11 @@
 </template>
 
 <script>
+import ValidCode from "@/views/ValidCode.vue";
+
 export default {
   name: "Register",
+  components: {ValidCode},
   data() {
     // 验证码校验
     const validatePassword = (rule, confirmPass, callback) => {
@@ -40,8 +51,18 @@ export default {
         callback()
       }
     }
+    const validateCode = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入验证码'))
+      } else if (value !== this.code) {
+        callback(new Error('验证码错误'))
+      } else {
+        callback()
+      }
+    }
     return {
-      form: {},
+      code: '',
+      form: {code:''},
       rules: {
         username: [
           { required: true, message: '请输入账号', trigger: 'blur' },
@@ -51,6 +72,9 @@ export default {
         ],
         confirmPass: [
           { validator: validatePassword, trigger: 'blur' }
+        ],
+        code: [
+          { validator: validateCode, trigger: 'blur' }
         ]
       }
     }
@@ -59,6 +83,9 @@ export default {
 
   },
   methods: {
+    getCode(code) {
+      this.code = code
+    },
     register() {
       this.$refs['formRef'].validate((valid) => {
         if (valid) {
