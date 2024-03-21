@@ -55,12 +55,12 @@ const router = new VueRouter({
   routes
 })
 
-// 注：不需要前台的项目，可以注释掉该路由守卫
 // 路由守卫
 router.beforeEach((to ,from, next) => {
   let adminPaths = ['/admin/home','/admin/adminInfo','/admin/adminPerson','/admin/password','/admin/notice','/admin/user','/admin/orders','/admin/address','/admin/certification','/admin/records','/admin/comment','/admin/slides']
+  let userPaths = ['/orders','/records','/person','/certification']
   let user = JSON.parse(localStorage.getItem("xm-user") || '{}');
-  if (user.role !== 'ADMIN' && adminPaths.includes(to.path)) {
+  if ((user.role !== 'ADMIN' && adminPaths.includes(to.path))|| (user.role !== 'USER' && userPaths.includes(to.path))) {
     next('/403')
   } else {
     next()
