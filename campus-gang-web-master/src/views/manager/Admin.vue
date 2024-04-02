@@ -12,9 +12,9 @@
     </div>
 
     <div class="table">
-      <el-table :data="tableData" strip @selection-change="handleSelectionChange">
+      <el-table :data="tableData" @selection-change="handleSelectionChange" :header-cell-style="{'text-align':'center'}">
         <el-table-column type="selection" width="55" align="center"></el-table-column>
-        <el-table-column prop="id" label="序号" width="70" align="center" sortable></el-table-column>
+        <el-table-column type="index" :index="indexMethod" label="序号"></el-table-column>
         <el-table-column prop="username" label="账号"></el-table-column>
         <el-table-column prop="name" label="姓名"></el-table-column>
         <el-table-column prop="phone" label="电话"></el-table-column>
@@ -37,13 +37,14 @@
       </el-table>
 
       <div class="pagination">
-        <el-pagination
+         <el-pagination
+            :hide-on-single-page="true"
             background
             @current-change="handleCurrentChange"
             :current-page="pageNum"
             :page-sizes="[5, 10, 20]"
             :page-size="pageSize"
-            layout="total, prev, pager, next"
+            layout="total, prev, pager, next, jumper"
             :total="total">
         </el-pagination>
       </div>
@@ -94,7 +95,7 @@ export default {
     return {
       tableData: [],  // 所有的数据
       pageNum: 1,   // 当前的页码
-      pageSize: 10,  // 每页显示的个数
+      pageSize: 8,  // 每页显示的个数
       total: 0,
       username: null,
       fromVisible: false,
@@ -112,6 +113,9 @@ export default {
     this.load(1)
   },
   methods: {
+    indexMethod(index) {
+      return index + 1 + (this.pageNum -1) * this.pageSize;
+    },
     handleAdd() {   // 新增数据
       this.form = {}  // 新增数据的时候清空数据
       this.fromVisible = true   // 打开弹窗

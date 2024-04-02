@@ -17,6 +17,7 @@ import com.example.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -104,13 +105,11 @@ public class WebController {
         List<Dict> lineList = new ArrayList<>();
         for (String time : timeList) {
             //统计当前日期的所有金额总数和
-            Double sum = list.stream().filter(orders -> orders.getTime().substring(0, 10).equals(time) && !(orders.getStatus().equals("待接单") || orders.getStatus().equals("已取消"))).
-                    map(Orders::getPrice).reduce(Double::sum).orElse(0.0);
+            BigDecimal sum = list.stream().filter(orders -> orders.getTime().substring(0, 10).equals(time) && !(orders.getStatus().equals("待接单") || orders.getStatus().equals("已取消"))).
+                    map(Orders::getPrice).reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
             Long amount = list.stream().filter(orders -> orders.getTime().substring(0, 10).equals(time) && !(orders.getStatus().equals("待接单") || orders.getStatus().equals("已取消"))).count();
-            Double profit = list.stream().filter(orders -> orders.getTime().substring(0, 10).equals(time) && !(orders.getStatus().equals("待接单") || orders.getStatus().equals("已取消"))).
-                    map(Orders::getServiceCharge).reduce(Double::sum).orElse(0.0);
             Dict dict = Dict.create();
-            Dict line = dict.set("time", time).set("value", sum).set("amount", amount).set("profit",profit);
+            Dict line = dict.set("time", time).set("value", sum).set("amount", amount);
             lineList.add(line);
         }
 
@@ -139,12 +138,10 @@ public class WebController {
         Map<String, Double> orderMap = new HashMap<String, Double>();
         Orders orders = new Orders();
         List<Orders> ordersList = ordersService.selectAll(orders);
-        orderMap.put("allDeal", ordersList.stream().filter(orders1 -> !(orders1.getStatus().equals("已取消") || orders1.getStatus().equals("待接单"))).map(Orders::getPrice).reduce(Double::sum).orElse(0.0));
-        orderMap.put("yesterdayDeal", ordersList.stream().filter(orders1 -> orders1.getTime().substring(0, 10).equals(DateUtil.yesterday().toString().substring(0, 10)) && !(orders1.getStatus().equals("已取消") || orders1.getStatus().equals("待接单"))).map(Orders::getPrice).reduce(Double::sum).orElse(0.0));
+        orderMap.put("allDeal", ordersList.stream().filter(orders1 -> !(orders1.getStatus().equals("已取消") || orders1.getStatus().equals("待接单"))).map(Orders::getPrice).reduce(BigDecimal::add).orElse(BigDecimal.ZERO).doubleValue());
+        orderMap.put("yesterdayDeal", ordersList.stream().filter(orders1 -> orders1.getTime().substring(0, 10).equals(DateUtil.yesterday().toString().substring(0, 10)) && !(orders1.getStatus().equals("已取消") || orders1.getStatus().equals("待接单"))).map(Orders::getPrice).reduce(BigDecimal::add).orElse(BigDecimal.ZERO).doubleValue());
 
         Map<String, Double> profitMap = new HashMap<String, Double>();
-        profitMap.put("allProfit", ordersList.stream().filter(orders1 -> !(orders1.getStatus().equals("已取消") || orders1.getStatus().equals("待接单"))).map(Orders::getServiceCharge).reduce(Double::sum).orElse(0.0));
-        profitMap.put("yesterdayProfit", ordersList.stream().filter(orders1 -> orders1.getTime().substring(0, 10).equals(DateUtil.yesterday().toString().substring(0, 10)) && !(orders1.getStatus().equals("已取消") || orders1.getStatus().equals("待接单"))).map(Orders::getServiceCharge).reduce(Double::sum).orElse(0.0));
 
         Map<String, Long> completeMap = new HashMap<String, Long>();
         completeMap.put("allComplete", ordersList.stream().filter(orders1 -> !(orders1.getStatus().equals("已取消") || orders1.getStatus().equals("待接单"))).count());

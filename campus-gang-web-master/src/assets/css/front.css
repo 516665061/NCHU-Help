@@ -1,16 +1,31 @@
+body {
+    background-color: #07111b0f;
+}
+
 .front-container {
     min-height: 100vh;
 }
 .front-notice {
+    width: 100%;
+    top: 0px;
     padding: 5px 20px;
     color: #666;
-    font-size: 12px
+    font-size: 12px;
+    height: 50px;
+    position: fixed;
+    z-index: 1000;
+    background-color: white;
 }
 .front-header {
+    width: 100%;
     display: flex;
     height: 60px;
     line-height: 60px;
     border-bottom: 1px solid #eee;
+    top: 50px;
+    position: fixed;
+    z-index: 1000;
+    background-color: white;
 }
 .front-header-left {
     display: flex;
@@ -47,6 +62,7 @@
     align-items: center;
     justify-content: right;
 }
+
 .front-footer {
     width: 100%;
     background-color: #fff;
@@ -67,13 +83,18 @@
 
 .main-content {
     width: 70%;
-    margin: 10px auto 0;
+    margin: 120px auto 0;
+    min-height: calc(100vh - 120px);
 }
 
 /* ElementUI 样式覆盖 */
 .el-menu.el-menu--horizontal {
     border: none !important;
     height: 59px;
+}
+
+.el-menu-item, .is-top {
+    font-size: 16px !important;
 }
 
 .el-menu-item:hover {
@@ -85,7 +106,29 @@
     background-color: #e6f1ff !important;
 }
 
-.service_title {
+.card {
+    padding: 10px;
+    border: 1px solid transparent;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+}
+
+.goods-item {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid transparent;
+    background-color: #fff;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.overflowShow {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+/*.service_title {
     width: 100%;
     margin-top: 40px;
     font-size: 40px;
@@ -151,7 +194,7 @@
     font-weight: 400;
     color: #666666;
     line-height: 24px;
-}
+}*/
 
 .index_footer {
     width: 100%;
@@ -172,7 +215,6 @@
     color: #409EFF;
     border-radius: 5px;
     cursor: pointer;
-
 }
 
 .wallet:hover {
@@ -184,4 +226,48 @@
     background-color: #409EFF;
     color: white;
     border-color: #409EFF;
+}
+
+.transition {
+    cursor: pointer;
+}
+
+.transition:hover {
+    border: 1px solid #409EFF;
+}
+
+.el-affix--fixed {
+    position: fixed;
+}
+
+.el-affix-container {
+    width: 150px;
+    background-color: white;
+    height: 180px;
+    border-radius: 5px;
+    box-shadow: rgba(7, 17, 27, 0.1) 0px 4px 8px 0px;
+}
+
+.el-affix-items {
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    padding: 0px 10px;
+}
+
+.el-affix-item {
+    display: flex;
+    align-items: center;
+}
+
+.left-hot {
+    margin-left: 10px;
+    border-bottom: 1px solid #eae4e4;
+    cursor: pointer;
+    color: #6d7278;
+}
+
+.left-hot:hover {
+    color: red !important;
+    font-weight: 550;
 }

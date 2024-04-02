@@ -12,13 +12,13 @@
     </div>
 
     <div class="table">
-      <el-table :data="tableData" stripe  @selection-change="handleSelectionChange">
+      <el-table :data="tableData" @selection-change="handleSelectionChange" :header-cell-style="{'text-align':'center'}">
         <el-table-column type="selection" width="55" align="center"></el-table-column>
-        <el-table-column prop="id" label="序号" width="80" align="center" sortable></el-table-column>
-        <el-table-column prop="title" label="标题" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="content" label="内容" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="time" label="创建时间"></el-table-column>
-        <el-table-column prop="user" label="创建人"></el-table-column>
+        <el-table-column type="index" :index="indexMethod" label="序号" align="center"></el-table-column>
+        <el-table-column prop="title" label="标题" show-overflow-tooltip align="center"></el-table-column>
+        <el-table-column prop="content" label="内容" show-overflow-tooltip align="center"></el-table-column>
+        <el-table-column prop="time" label="创建时间" align="center"></el-table-column>
+        <el-table-column prop="user" label="创建人" align="center"></el-table-column>
 
         <el-table-column label="操作" width="180" align="center">
           <template v-slot="scope">
@@ -29,13 +29,14 @@
       </el-table>
 
       <div class="pagination">
-        <el-pagination
+         <el-pagination
+            :hide-on-single-page="true"
             background
             @current-change="handleCurrentChange"
             :current-page="pageNum"
             :page-sizes="[5, 10, 20]"
             :page-size="pageSize"
-            layout="total, prev, pager, next"
+            layout="total, prev, pager, next, jumper"
             :total="total">
         </el-pagination>
       </div>
@@ -68,7 +69,7 @@ export default {
     return {
       tableData: [],  // 所有的数据
       pageNum: 1,   // 当前的页码
-      pageSize: 10,  // 每页显示的个数
+      pageSize: 8,  // 每页显示的个数
       total: 0,
       title: null,
       fromVisible: false,
@@ -89,6 +90,9 @@ export default {
     this.load(1)
   },
   methods: {
+    indexMethod(index) {
+      return index + 1 + (this.pageNum -1) * this.pageSize;
+    },
     handleAdd() {   // 新增数据
       this.form = {}  // 新增数据的时候清空数据
       this.fromVisible = true   // 打开弹窗

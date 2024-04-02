@@ -7,10 +7,12 @@ package com.example.common.enums;
  */
 public enum OrderStatusEnum {
     CANCEL("已取消"),
+    NOTPAY("待支付"),
     NO_ACCEPT("待接单"),
     NO_ARRIVE("待送达"),
     NO_RECEIVE("待收货"),
     NO_COMMENT("待评价"),
+    NO_SEND("待发货"),
     DONE("已完成"),
     ;
 

@@ -5,7 +5,7 @@
 <mapper namespace="com.example.mapper.AddressMapper">
 
     <sql id="Base_Column_List">
-        id,address,door_no,user_name,phone,user_id
+        id,address,user_name,phone,user_id
     </sql>
 
     <select id="selectAll" resultType="com.example.entity.Address">
@@ -15,7 +15,6 @@
         <where>
             <if test="id != null"> and id = #{id}</if>
             <if test="address != null"> and address like concat('%', #{address}, '%')</if>
-            <if test="doorNo != null"> and door_no like concat('%', #{doorNo}, '%')</if>
             <if test="userName != null"> and user_name like concat('%', #{userName}, '%')</if>
             <if test="phone != null"> and phone like concat('%', #{phone}, '%')</if>
             <if test="userId != null"> and user_id = #{userId}</if>
@@ -40,7 +39,6 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="address != null">address,</if>
-            <if test="doorNo != null">door_no,</if>
             <if test="userName != null">user_name,</if>
             <if test="phone != null">phone,</if>
             <if test="userId != null">user_id,</if>
@@ -48,7 +46,6 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
             <if test="address != null">#{address},</if>
-            <if test="doorNo != null">#{doorNo},</if>
             <if test="userName != null">#{userName},</if>
             <if test="phone != null">#{phone},</if>
             <if test="userId != null">#{userId},</if>
@@ -60,9 +57,6 @@
         <set>
             <if test="address != null">
                 address = #{address},
-            </if>
-            <if test="doorNo != null">
-                door_no = #{doorNo},
             </if>
             <if test="userName != null">
                 user_name = #{userName},

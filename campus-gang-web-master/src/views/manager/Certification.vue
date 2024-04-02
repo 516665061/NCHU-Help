@@ -11,9 +11,9 @@
     </div>
 
     <div class="table">
-      <el-table :data="tableData" strip @selection-change="handleSelectionChange">
+      <el-table :data="tableData" @selection-change="handleSelectionChange" :header-cell-style="{'text-align':'center'}">
         <el-table-column type="selection" width="55" align="center"></el-table-column>
-        <el-table-column prop="id" label="序号" width="70" align="center" sortable></el-table-column>
+        <el-table-column type="index" :index="indexMethod" label="序号"></el-table-column>
         <el-table-column prop="userId" label="账号ID"></el-table-column>
         <el-table-column prop="name" label="名称"></el-table-column>
         <el-table-column prop="studentNo" label="学号"></el-table-column>
@@ -22,7 +22,7 @@
             <el-image :src="scope.row.avatar" style="width: 50px; border-radius: 5px;" :preview-src-list="[scope.row.avatar]"></el-image>
           </template>
         </el-table-column>
-        <el-table-column prop="phone" label="联系方式"></el-table-column>
+        <el-table-column prop="phone" label="联系方式" show-overflow-tooltip></el-table-column>
         <el-table-column prop="card1" label="证件照片">
           <template v-slot="scope">
             <el-image :src="scope.row.card" style="width: 50px; border-radius: 5px;" :preview-src-list="[scope.row.card]"></el-image>
@@ -35,7 +35,7 @@
             <el-tag type="danger" v-if="scope.row.status === '拒绝'">拒绝</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="reason" label="审核理由"></el-table-column>
+        <el-table-column prop="reason" label="审核理由" show-overflow-tooltip></el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template v-slot="scope">
             <el-button size="mini" type="primary" plain @click="handleEdit(scope.row)">审核</el-button>
@@ -45,13 +45,14 @@
       </el-table>
 
       <div class="pagination">
-        <el-pagination
+         <el-pagination
+            :hide-on-single-page="true"
             background
             @current-change="handleCurrentChange"
             :current-page="pageNum"
             :page-sizes="[5, 10, 20]"
             :page-size="pageSize"
-            layout="total, prev, pager, next"
+            layout="total, prev, pager, next, jumper"
             :total="total">
         </el-pagination>
       </div>
@@ -89,7 +90,7 @@ export default {
     return {
       tableData: [],  // 所有的数据
       pageNum: 1,   // 当前的页码
-      pageSize: 10,  // 每页显示的个数
+      pageSize: 8,  // 每页显示的个数
       total: 0,
       name: null,
       fromVisible: false,
@@ -103,6 +104,9 @@ export default {
     this.load(1)
   },
   methods: {
+    indexMethod(index) {
+      return index + 1 + (this.pageNum -1) * this.pageSize;
+    },
     handleAdd() {   // 新增数据
       this.form = {}  // 新增数据的时候清空数据
       this.fromVisible = true   // 打开弹窗

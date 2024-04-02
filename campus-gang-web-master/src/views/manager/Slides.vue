@@ -12,10 +12,10 @@
     </div>
 
     <div class="table">
-      <el-table :data="tableData" stripe  @selection-change="handleSelectionChange">
+      <el-table :data="tableData" @selection-change="handleSelectionChange" :header-cell-style="{'text-align':'center'}">
         <el-table-column type="selection" width="55" align="center"></el-table-column>
-        <el-table-column prop="id" label="ID" width="80" align="center" sortable></el-table-column>
-        <el-table-column prop="image" label="图片" show-overflow-tooltip>
+        <el-table-column type="index" :index="indexMethod" label="序号" align="center"></el-table-column>
+        <el-table-column prop="image" label="图片" show-overflow-tooltip align="center">
           <template v-slot="scop">
             <el-image
                 style="width: auto; height: 100px"
@@ -25,7 +25,7 @@
                 :preview-src-list="[scop.row.image]"></el-image>
           </template>
         </el-table-column>
-        <el-table-column prop="url" label="跳转地址" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="url" label="跳转地址" show-overflow-tooltip align="center"></el-table-column>
 
         <el-table-column label="操作" width="180" align="center">
           <template v-slot="scope">
@@ -36,13 +36,14 @@
       </el-table>
 
       <div class="pagination">
-        <el-pagination
+         <el-pagination
+            :hide-on-single-page="true"
             background
             @current-change="handleCurrentChange"
             :current-page="pageNum"
             :page-sizes="[5, 10, 20]"
             :page-size="pageSize"
-            layout="total, prev, pager, next"
+            layout="total, prev, pager, next, jumper"
             :total="total">
         </el-pagination>
       </div>
@@ -110,6 +111,9 @@ export default {
     this.load(1)
   },
   methods: {
+    indexMethod(index) {
+      return index + 1 + (this.pageNum -1) * this.pageSize;
+    },
     beforeAvatarUpload(file) {
       const format = file.type === 'image/jpeg'|| 'image/png';
       if (!format) {

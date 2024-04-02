@@ -7,18 +7,24 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "amfe-flexible": "^2.2.1",
     "axios": "^1.5.1",
     "better-scroll": "^2.5.1",
     "core-js": "^3.8.3",
     "echarts": "^5.5.0",
     "element-ui": "^2.15.14",
+    "lib-flexible-computer": "^1.0.2",
     "vue": "^2.6.14",
-    "vue-router": "^3.5.1"
+    "vue-router": "^3.5.1",
+    "wangeditor": "^4.7.15"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "postcss-px2rem-exclude": "0.0.6",
+    "postcss-pxtorem": "^6.1.0",
+    "px2rem-loader": "^0.1.9",
     "vue-template-compiler": "^2.6.14"
   },
   "browserslist": [

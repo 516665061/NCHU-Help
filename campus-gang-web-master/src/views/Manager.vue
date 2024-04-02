@@ -49,6 +49,12 @@
             <el-menu-item index="/admin/records">收支明细</el-menu-item>
             <el-menu-item index="/admin/notice">公告信息</el-menu-item>
             <el-menu-item index="/admin/comment">评价管理</el-menu-item>
+            <el-menu-item index="/admin/goods">商品信息</el-menu-item>
+            <el-menu-item index="/admin/category">分类信息</el-menu-item>
+            <el-menu-item index="/admin/circles">圈子信息</el-menu-item>
+            <el-menu-item index="/admin/lost">失物招领</el-menu-item>
+            <el-menu-item index="/admin/evaluate">商品评价</el-menu-item>
+            <el-menu-item index="/admin/posts">社区帖子</el-menu-item>
           </el-submenu>
 
           <el-submenu index="user">

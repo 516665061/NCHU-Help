@@ -14,3 +14,17 @@ a {
     margin-bottom: 18px;
     line-height: 32px;
 }
+
+.line1 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.line {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5; /* 这里指定显示的行数 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

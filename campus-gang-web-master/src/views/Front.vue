@@ -10,12 +10,17 @@
       <div class="front-header-center">
         <div class="front-header-nav">
           <el-menu :default-active="$route.path" mode="horizontal" router text-color="#606266" active-text-color="#409EFF" class="el-menu-demo">
-						<el-menu-item index="/home">首页</el-menu-item>
-						<el-menu-item index="/orders" v-if="user.username">订单</el-menu-item>
-						<el-menu-item index="/records" v-if="user.username">收支明细</el-menu-item>
-						<el-menu-item index="/person" v-if="user.username">个人中心</el-menu-item>
+						<el-menu-item index="/home" @click="topView">首页</el-menu-item>
+            <el-menu-item index="/market" v-if="user.username" @click="topView">校园市场</el-menu-item>
+            <el-menu-item index="/posts" v-if="user.username" @click="topView">校园论坛</el-menu-item>
+						<el-menu-item index="/lost" v-if="user.username" @click="topView">失物招领</el-menu-item>
+						<el-menu-item index="/orders" v-if="user.username" @click="topView">悬赏任务</el-menu-item>
+						<el-menu-item index="/person" v-if="user.username" @click="topView">个人中心</el-menu-item>
           </el-menu>
         </div>
+      </div>
+      <div style="margin-right: 20px">
+        <span @click="$router.push('/chat')" style="font-size: 16px; cursor: pointer"><i class="el-icon-chat-dot-round"></i> 聊天消息</span>
       </div>
       <div class="front-header-right">
         <div v-if="!user.username">
@@ -35,16 +40,31 @@
                 <div style="text-decoration: none" @click="openWallet">钱包</div>
               </el-dropdown-item>
               <el-dropdown-item>
+                <div style="text-decoration: none" @click="$router.push('/collect')">我的收藏</div>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <div style="text-decoration: none" @click="$router.push('/goods')">我的商品</div>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <div style="text-decoration: none" @click="$router.push('/goodsOrders')">我的订单</div>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <div style="text-decoration: none" @click="$router.push('/userPosts')">我的帖子</div>
+              </el-dropdown-item>
+              <el-dropdown-item>
                 <div style="text-decoration: none" @click="loadAddress">地址管理</div>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <div style="text-decoration: none" @click="loadRecords">收支明细</div>
               </el-dropdown-item>
               <el-dropdown-item>
                 <div style="text-decoration: none" @click="loadComment">评价管理</div>
               </el-dropdown-item>
               <el-dropdown-item>
-                <router-link to="/certification"><div style="text-decoration: none">骑手认证</div></router-link>
+                <div style="text-decoration: none" @click="$router.push('/certification')">骑手认证</div>
               </el-dropdown-item>
               <el-dropdown-item>
-                <div style="text-decoration: none" @click="logout">退出</div>
+                <div style="text-decoration: none" @click="logout">退出登录</div>
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -54,11 +74,11 @@
 
     <el-dialog title="地址管理 " :visible.sync="dialogTableVisible" center>
       <div class="table">
-        <el-table :data="addressData" strip height="100%">
-          <el-table-column type="index" :index="indexMethod" label="序号" align="center" sortable></el-table-column>
-          <el-table-column prop="address" label="地址"></el-table-column>
-          <el-table-column prop="userName" label="联系人"></el-table-column>
-          <el-table-column prop="phone" label="联系电话"></el-table-column>
+        <el-table :data="addressData" height="100%" :header-cell-style="{'text-align':'center'}">
+          <el-table-column type="index" :index="indexMethodOther" label="序号" align="center" sortable></el-table-column>
+          <el-table-column prop="address" label="地址" align="center"></el-table-column>
+          <el-table-column prop="userName" label="联系人" align="center"></el-table-column>
+          <el-table-column prop="phone" label="联系电话" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="180">
             <template v-slot="scope">
               <el-button size="mini" type="primary" plain @click="handleEdit(scope.row)">编辑</el-button>
@@ -70,6 +90,12 @@
       <span slot="footer" class="dialog-footer">
         <el-button type="warning" plain @click="dialogTableVisible = false">取 消</el-button>
         <el-button type="primary" plain @click="handleAdd">新 增</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog title="收支明细" :visible.sync="dialogRecordVisible" center>
+      <Records></Records>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" plain @click="dialogRecordVisible = false">确  定</el-button>
       </span>
     </el-dialog>
 
@@ -92,32 +118,32 @@
     </el-dialog>
 
     <el-dialog title="评价" :visible.sync="commentVisible" width="70%" append-to-body center>
-      <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tabs v-model="activeName" @tab-click="handleClick" :header-cell-style="{'text-align':'center'}">
         <el-tab-pane label="评价我的" name="first">
           <div class="table">
-            <el-table :data="commentList" strip height="100%" :default-sort = "{prop: 'time', order: 'descending'}">
-              <el-table-column type="index" :index="indexMethod" label="序号"></el-table-column>
-              <el-table-column prop="content" label="评价">
+            <el-table :data="commentList" height="100%" :default-sort = "{prop: 'time', order: 'descending'}">
+              <el-table-column type="index" :index="indexMethodOther" label="序号" align="center"></el-table-column>
+              <el-table-column prop="content" label="评价" align="center">
                 <template slot-scope="{row}">
                   {{ row.content || '该用户暂未做出评价' }}
                 </template>
               </el-table-column>
-              <el-table-column prop="star" label="评分">
+              <el-table-column prop="star" label="评分" align="center">
                 <template v-slot="scope">
                   <el-rate v-model="scope.row.star" disabled></el-rate>
                 </template>
               </el-table-column>
-              <el-table-column prop="acceptName" label="用户"></el-table-column>
-              <el-table-column prop="orderNo" label="订单编号"></el-table-column>
-              <el-table-column prop="time" label="时间"></el-table-column>
+              <el-table-column prop="acceptName" label="用户" align="center"></el-table-column>
+              <el-table-column prop="orderNo" label="订单编号" align="center"></el-table-column>
+              <el-table-column prop="time" label="时间" align="center"></el-table-column>
             </el-table>
           </div>
         </el-tab-pane>
         <el-tab-pane label="我的评价" name="second">
           <div class="table">
-            <el-table :data="commentList" strip height="100%"  @selection-change="handleSelectionChange" :default-sort = "{prop: 'time', order: 'descending'}">
+            <el-table :data="commentList" height="100%"  @selection-change="handleSelectionChange" :default-sort = "{prop: 'time', order: 'descending'}">
               <el-table-column type="selection" width="55" align="center"></el-table-column>
-              <el-table-column type="index" :index="indexMethod" label="序号"></el-table-column>
+              <el-table-column type="index" :index="indexMethodOther" label="序号"></el-table-column>
               <el-table-column prop="content" label="评价">
                 <template slot-scope="{row}">
                   {{ row.content || '该用户暂未做出评价' }}
@@ -142,7 +168,7 @@
       </el-tabs>
       <div slot="footer" class="dialog-footer">
         <el-button type="danger" @click="delBatchComment" v-if="ids.length != 0">删除选中（{{ids.length}}）条</el-button>
-        <el-button type="primary" @click="commentVisible = false">确 定</el-button>
+        <el-button type="primary" plain @click="commentVisible = false">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -185,9 +211,12 @@
 </template>
 
 <script>
-
+import Records from './component/Records.vue'
 export default {
   name: "FrontLayout",
+  components: {
+    Records
+  },
 
   data () {
     return {
@@ -199,6 +228,7 @@ export default {
       activeName: 'first',
       user: JSON.parse(localStorage.getItem("xm-user") || '{}'),
       dialogTableVisible: false,
+      dialogRecordVisible: false,
       fromVisible: false,
       commentVisible: false,
       walletVisible: false,
@@ -227,6 +257,9 @@ export default {
     this.loadNotice()
   },
   methods: {
+    topView() {
+      document.documentElement.scrollTop = 0
+    },
     loadNotice() {
       this.$request.get('/notice/selectAll').then(res => {
         this.notice = res.data
@@ -244,6 +277,9 @@ export default {
       })
     },
     indexMethod(index) {
+      return index + 1 + (this.pageNum -1) * this.pageSize;
+    },
+    indexMethodOther(index) {
       return index + 1;
     },
     handleSelectionChange(rows) {   // 当前选中的所有的行数据
@@ -369,6 +405,18 @@ export default {
     },
     loadAddress() {
       this.dialogTableVisible = true
+      this.$request.get('/address/selectAll',{
+        params: {
+          userId: this.user.id
+        }
+      }).then(res => {
+        if (res.code === '200'){
+          this.addressData = res.data
+        }
+      })
+    },
+    loadRecords() {
+      this.dialogRecordVisible = true
       this.$request.get('/address/selectAll',{
         params: {
           userId: this.user.id

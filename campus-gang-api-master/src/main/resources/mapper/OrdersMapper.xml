@@ -5,7 +5,7 @@
 <mapper namespace="com.example.mapper.OrdersMapper">
 
     <sql id="Base_Column_List">
-        id,order_no,name,descr,img,type,weight,price,service_charge,user_id,accept_id,time,accept_time,expect_time,arrive_time,status,address_id,target_id,comment
+        id,order_no,name,descr,img,type,weight,price,type,user_id,accept_id,time,accept_time,expect_time,arrive_time,status,address_id,target_id,comment
     </sql>
 
     <select id="selectAll" resultType="com.example.entity.Orders">
@@ -26,6 +26,7 @@
             <if test="status != null"> and orders.status = #{status}</if>
             <if test="userId != null"> and orders.user_id = #{userId}</if>
             <if test="acceptId != null"> and orders.accept_id = #{acceptId}</if>
+            <if test="property != null"> and orders.property = #{property}</if>
         </where>
         order by id desc
     </select>
@@ -62,7 +63,7 @@
             <if test="type != null">type,</if>
             <if test="weight != null">weight,</if>
             <if test="price != null">price,</if>
-            <if test="serviceCharge != null">service_charge,</if>
+            <if test="property != null">property,</if>
             <if test="userId != null">user_id,</if>
             <if test="acceptId != null">accept_id,</if>
             <if test="time != null">time,</if>
@@ -83,7 +84,7 @@
             <if test="type != null">#{type},</if>
             <if test="weight != null">#{weight},</if>
             <if test="price != null">#{price},</if>
-            <if test="serviceCharge != null">#{serviceCharge},</if>
+            <if test="property != null">#{property},</if>
             <if test="userId != null">#{userId},</if>
             <if test="acceptId != null">#{acceptId},</if>
             <if test="time != null">#{time},</if>
@@ -121,8 +122,8 @@
             <if test="price != null">
                 price = #{price},
             </if>
-            <if test="serviceCharge != null">
-                service_charge = #{serviceCharge},
+            <if test="property != null">
+                type = #{property},
             </if>
             <if test="userId != null">
                 user_id = #{userId},

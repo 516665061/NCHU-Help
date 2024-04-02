@@ -14,24 +14,24 @@
     </div>
 
     <div class="table">
-      <el-table :data="tableData" strip @selection-change="handleSelectionChange">
+      <el-table :data="tableData" @selection-change="handleSelectionChange" :header-cell-style="{'text-align':'center'}">
         <el-table-column type="selection" width="55" align="center"></el-table-column>
-        <el-table-column prop="id" label="序号" width="70" align="center" sortable></el-table-column>
-        <el-table-column prop="content" label="评论">
+        <el-table-column type="index" :index="indexMethod" label="序号"></el-table-column>
+        <el-table-column prop="content" label="评论" show-overflow-tooltip>
           <template v-slot="scope">
             {{ scope.row.content || '该用户未做出评价' }}
           </template>
         </el-table-column>
-        <el-table-column prop="star" label="评分">
+        <el-table-column prop="star" label="评分" align="center">
           <template v-slot="scope">
             <el-rate v-model="scope.row.star" disabled></el-rate>
           </template>
         </el-table-column>
-        <el-table-column prop="userName" label="用户"></el-table-column>
-        <el-table-column prop="acceptName" label="骑手"></el-table-column>
-        <el-table-column prop="orderId" label="订单ID"></el-table-column>
-        <el-table-column prop="orderNo" label="订单编号"></el-table-column>
-        <el-table-column prop="time" label="时间"></el-table-column>
+        <el-table-column prop="userName" label="用户" align="center"></el-table-column>
+        <el-table-column prop="acceptName" label="骑手" align="center"></el-table-column>
+        <el-table-column prop="orderId" label="订单ID" align="center"></el-table-column>
+        <el-table-column prop="orderNo" label="订单编号" align="center"></el-table-column>
+        <el-table-column prop="time" label="时间" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template v-slot="scope">
             <el-button size="mini" type="danger" plain @click="del(scope.row.id)">删除</el-button>
@@ -40,13 +40,14 @@
       </el-table>
 
       <div class="pagination">
-        <el-pagination
+         <el-pagination
+            :hide-on-single-page="true"
             background
             @current-change="handleCurrentChange"
             :current-page="pageNum"
             :page-sizes="[5, 10, 20]"
             :page-size="pageSize"
-            layout="total, prev, pager, next"
+            layout="total, prev, pager, next, jumper"
             :total="total">
         </el-pagination>
       </div>
@@ -63,7 +64,7 @@ export default {
     return {
       tableData: [],  // 所有的数据
       pageNum: 1,   // 当前的页码
-      pageSize: 10,  // 每页显示的个数
+      pageSize: 8,  // 每页显示的个数
       total: 0,
       content: null,
       userName: null,
@@ -81,6 +82,9 @@ export default {
     this.load(1)
   },
   methods: {
+    indexMethod(index) {
+      return index + 1 + (this.pageNum -1) * this.pageSize;
+    },
     del(id) {   // 单个删除
       this.$confirm('您确定删除吗？', '确认删除', {type: "warning"}).then(response => {
         this.$request.delete('/comment/delete/' + id).then(res => {

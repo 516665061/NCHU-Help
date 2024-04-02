@@ -1,5 +1,7 @@
 package com.example.entity;
 
+import java.math.BigDecimal;
+
 /**
  * 功能
  * 作者：封延民
@@ -21,7 +23,7 @@ public class Orders {
     /** 物品重量 */
     private Double weight;
     /** 小费 */
-    private Double price;
+    private BigDecimal price;
     /** 发起人ID */
     private Integer userId;
     /** 接单人ID */
@@ -50,6 +52,17 @@ public class Orders {
     private String pickAddress;
 
     private String receiveAddress;
+    private Integer goodsId;
+
+    /** 发起人联系ID */
+    private Integer addressId;
+    /** 到达处联系ID */
+    private Integer targetId;
+    /** 订单备注 */
+    private String comment;
+    /**手续费*/
+    private String property;
+
 
     public Certification getCertification() {
         return certification;
@@ -159,11 +172,11 @@ public class Orders {
         this.weight = weight;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -263,20 +276,19 @@ public class Orders {
         this.arriveTime = arriveTime;
     }
 
-    /** 发起人联系ID */
-    private Integer addressId;
-    /** 到达处联系ID */
-    private Integer targetId;
-    /** 订单备注 */
-    private String comment;
-    /**手续费*/
-    private double serviceCharge;
-
-    public double getServiceCharge() {
-        return serviceCharge;
+    public String getProperty() {
+        return property;
     }
 
-    public void setServiceCharge(double serviceCharge) {
-        this.serviceCharge = serviceCharge;
+    public void setProperty(String property) {
+        this.property = property;
+    }
+
+    public Integer getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(Integer goodsId) {
+        this.goodsId = goodsId;
     }
 }

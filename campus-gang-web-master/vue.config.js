@@ -10,5 +10,5 @@ module.exports = defineConfig({
           args[0].title = "NCHU校园帮";
           return args;
         })
-  }
+  },
 })
