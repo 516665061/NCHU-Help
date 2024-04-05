@@ -10,12 +10,11 @@
       <div class="front-header-center">
         <div class="front-header-nav">
           <el-menu :default-active="$route.path" mode="horizontal" router text-color="#606266" active-text-color="#409EFF" class="el-menu-demo">
-						<el-menu-item index="/home" @click="topView">首页</el-menu-item>
-            <el-menu-item index="/market" v-if="user.username" @click="topView">校园市场</el-menu-item>
-            <el-menu-item index="/posts" v-if="user.username" @click="topView">校园论坛</el-menu-item>
-						<el-menu-item index="/lost" v-if="user.username" @click="topView">失物招领</el-menu-item>
-						<el-menu-item index="/orders" v-if="user.username" @click="topView">悬赏任务</el-menu-item>
-						<el-menu-item index="/person" v-if="user.username" @click="topView">个人中心</el-menu-item>
+						<el-menu-item index="/home">首页</el-menu-item>
+            <el-menu-item index="/market" v-if="user.username">校园市场</el-menu-item>
+            <el-menu-item index="/posts" v-if="user.username">校园论坛</el-menu-item>
+						<el-menu-item index="/lost" v-if="user.username">失物招领</el-menu-item>
+						<el-menu-item index="/orders" v-if="user.username">校园跑腿</el-menu-item>
           </el-menu>
         </div>
       </div>
@@ -37,25 +36,13 @@
             </div>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
+                <div style="text-decoration: none" @click="$router.push('/person')">个人中心</div>
+              </el-dropdown-item>
+              <el-dropdown-item>
                 <div style="text-decoration: none" @click="openWallet">钱包</div>
               </el-dropdown-item>
               <el-dropdown-item>
-                <div style="text-decoration: none" @click="$router.push('/collect')">我的收藏</div>
-              </el-dropdown-item>
-              <el-dropdown-item>
-                <div style="text-decoration: none" @click="$router.push('/goods')">我的商品</div>
-              </el-dropdown-item>
-              <el-dropdown-item>
-                <div style="text-decoration: none" @click="$router.push('/goodsOrders')">我的订单</div>
-              </el-dropdown-item>
-              <el-dropdown-item>
-                <div style="text-decoration: none" @click="$router.push('/userPosts')">我的帖子</div>
-              </el-dropdown-item>
-              <el-dropdown-item>
                 <div style="text-decoration: none" @click="loadAddress">地址管理</div>
-              </el-dropdown-item>
-              <el-dropdown-item>
-                <div style="text-decoration: none" @click="loadRecords">收支明细</div>
               </el-dropdown-item>
               <el-dropdown-item>
                 <div style="text-decoration: none" @click="loadComment">评价管理</div>
@@ -257,9 +244,6 @@ export default {
     this.loadNotice()
   },
   methods: {
-    topView() {
-      document.documentElement.scrollTop = 0
-    },
     loadNotice() {
       this.$request.get('/notice/selectAll').then(res => {
         this.notice = res.data

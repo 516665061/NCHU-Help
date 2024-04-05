@@ -23,6 +23,7 @@ const routes = [
       { path: 'notice', name: 'Notice', meta: { name: '公告信息' }, component: () => import('../views/manager/Notice') },
       { path: 'user', name: 'User', meta: {name: '用户信息'}, component: () => import('../views/manager/User') },
       { path: 'goods', name: 'Goods', meta: {name: '商品信息'}, component: () => import('../views/manager/Goods') },
+      { path: 'tasks', name: 'Tasks', meta: {name: '悬赏订单'}, component: () => import('../views/manager/Task') },
       { path: 'category', name: 'Category', meta: { name: '分类信息' }, component: () => import('../views/manager/Category') },
       { path: 'circles', name: 'Circles', meta: { name: '圈子管理' }, component: () => import('../views/manager/Circles') },
       { path: 'orders', name: 'Orders', meta: {name: '订单信息'}, component: () => import('../views/manager/Orders') },
@@ -49,15 +50,11 @@ const routes = [
       { path: 'person', name: 'Person', meta: { name: '个人信息' }, component: () => import('../views/front/Person') },
       { path: 'certification', name: 'Certification', meta: {name: '骑手认证'}, component: () => import('../views/front/Certification')},
       { path: 'goodsDetail', name: 'GoodsDetail', meta: {name: '商品详情'}, component: () => import('../views/front/GoodsDetail')},
-      { path: 'collect', name: 'Collect', meta: {name: '我的收藏'}, component: () => import('../views/front/Collect')},
       { path: 'addGoods', name: 'AddGoods', meta: {name: '发布商品'}, component: () => import('../views/front/AddGoods')},
-      { path: 'goods', name: 'FrontGoods', meta: {name: '我的商品'}, component: () => import('../views/front/Goods')},
-      { path: 'goodsOrders', name: 'GoodsOrders', meta: {name: '商品订单'}, component: () => import('../views/front/GoodsOrders')},
       { path: 'posts', name:'Posts', meta:{name: '论坛帖子'}, component: () => import('../views/front/Posts') },
-      { path: 'userPosts', name:'UserPosts', meta:{name: '用户帖子'}, component: () => import('../views/front/UserPosts') },
       { path: 'postsDetail', name:'PostsDetail', meta:{name: '帖子详情'}, component: () => import('../views/front/PostsDetail') },
       { path: 'chat', name:'Chat', meta:{name: '聊天'}, component: () => import('../views/front/Chat') },
-      { path: 'center', name:'Center', meta:{name: '中心'}, component: () => import('../views/front/Center') },
+      { path: 'person', name:'FPerson', meta:{name: '个人中心'}, component: () => import('../views/front/Person') },
     ]
   },
   { path: '/login', name: 'Login', meta: { name: '登录' }, component: () => import('../views/Login') },
@@ -82,6 +79,10 @@ router.beforeEach((to ,from, next) => {
   } else {
     next()
   }
+})
+
+router.afterEach((to, from, next) => {
+  window.scrollTo(0, 0)
 })
 
 export default router

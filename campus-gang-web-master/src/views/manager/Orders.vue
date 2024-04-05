@@ -62,7 +62,6 @@
 
       <div class="pagination">
          <el-pagination
-            :hide-on-single-page="true"
             background
             @current-change="handleCurrentChange"
             :current-page="pageNum"
@@ -127,7 +126,7 @@ export default {
     return {
       tableData: [],  // 所有的数据
       pageNum: 1,   // 当前的页码
-      pageSize: 8,  // 每页显示的个数
+      pageSize: 5,  // 每页显示的个数
       total: 0,
       orderNo: null,
       form:{},
@@ -215,6 +214,7 @@ export default {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
           orderNo: this.orderNo,
+          property: "商品"
         }
       }).then(res => {
         this.tableData = res.data?.list

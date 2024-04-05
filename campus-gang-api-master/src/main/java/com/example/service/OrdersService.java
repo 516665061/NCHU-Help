@@ -53,6 +53,7 @@ public class OrdersService {
         orders.setImg(goods.getImg());
         orders.setAcceptId(goods.getUserId());  //卖家用户ID
         orders.setPrice(goods.getPrice());
+        orders.setType(goods.getCategory());
 
         Account currentUser = TokenUtils.getCurrentUser();
         orders.setUserId(currentUser.getId());  //下单人的ID
@@ -121,9 +122,11 @@ public class OrdersService {
                 orders.setAcceptTime(DateUtil.now());
                 //  记录收支明细
                 RecordsService.addRecord(currentUser,"购买" + orders.getName(),price, RecordsTypeEnum.OUT.getValue());
-            }else if (OrderStatusEnum.NO_RECEIVE.getValue().equals(orders.getStatus())) {
+            }else if (OrderStatusEnum.NO_ARRIVE.getValue().equals(orders.getStatus())) {
 
-            }else if (OrderStatusEnum.DONE.getValue().equals(orders.getStatus())) {
+            } else if (OrderStatusEnum.NO_RECEIVE.getValue().equals(orders.getStatus())) {
+                orders.setArriveTime(DateUtil.now());
+            } else if (OrderStatusEnum.DONE.getValue().equals(orders.getStatus())) {
                 Integer acceptId = orders.getAcceptId();
                 User user = userService.selectById(acceptId);
                 user.setAccount(user.getAccount().add(orders.getPrice()));

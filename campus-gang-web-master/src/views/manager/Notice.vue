@@ -30,7 +30,6 @@
 
       <div class="pagination">
          <el-pagination
-            :hide-on-single-page="true"
             background
             @current-change="handleCurrentChange"
             :current-page="pageNum"

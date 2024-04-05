@@ -49,7 +49,7 @@ export default {
     const validateCode = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入验证码'))
-      } else if (value !== this.code) {
+      } else if (value.toLowerCase() !== this.code) {
         callback(new Error('验证码错误'))
       } else {
         callback()
@@ -79,7 +79,7 @@ export default {
   },
   methods: {
     getCode(code) {
-      this.code = code
+      this.code = code.toLowerCase()
     },
     login() {
       this.$refs['formRef'].validate((valid) => {

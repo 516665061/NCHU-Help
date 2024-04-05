@@ -5,7 +5,7 @@
 <mapper namespace="com.example.mapper.OrdersMapper">
 
     <sql id="Base_Column_List">
-        id,order_no,name,descr,img,type,weight,price,type,user_id,accept_id,time,accept_time,expect_time,arrive_time,status,address_id,target_id,comment
+        id,order_no,name,descr,img,type,property,weight,price,type,user_id,accept_id,time,accept_time,expect_time,arrive_time,status,address_id,target_id,comment
     </sql>
 
     <select id="selectAll" resultType="com.example.entity.Orders">

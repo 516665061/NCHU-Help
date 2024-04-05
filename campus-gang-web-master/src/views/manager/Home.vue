@@ -28,11 +28,11 @@
                 <i class="el-icon-s-marketing"></i>
               </div>
               <div class="fo-12 fo-9 mt-30">昨日新增</div>
-              <div class="fo-12 fo-6">{{ yesterdayProfit }}元</div>
+              <div class="fo-12 fo-6">{{ yesterdayDeal }}元</div>
             </div>
             <div class="ml-40">
-              <div class="fo-14 fo-3">总盈利</div>
-              <div class="fo-24 fo-3">{{ allProfit }} <span class="fo-12">元</span></div>
+              <div class="fo-14 fo-3">总交易额</div>
+              <div class="fo-24 fo-3">{{ allDeal }} <span class="fo-12">元</span></div>
             </div>
           </div>
         </el-col>
@@ -40,14 +40,14 @@
           <div class="total-box">
             <div class="ml-20 text-center total-box-per">
               <div class="total-box-icon fo-w total-box--3">
-                <i class="el-icon-s-finance"></i>
+                <i class="el-icon-s-promotion"></i>
               </div>
               <div class="fo-12 fo-9 mt-30">昨日新增</div>
-              <div class="fo-12 fo-6">{{ yesterdayDeal }}元</div>
+              <div class="fo-12 fo-6">{{ yesterdayPost }}条</div>
             </div>
             <div class="ml-40">
-              <div class="fo-14 fo-3">总交易额</div>
-              <div class="fo-24 fo-3">{{ allDeal }} <span class="fo-12">元</span></div>
+              <div class="fo-14 fo-3">总发帖量</div>
+              <div class="fo-24 fo-3">{{ allPost }} <span class="fo-12">条</span></div>
             </div>
           </div>
         </el-col>
@@ -71,7 +71,7 @@
 
     <div style="margin-top: 10px;flex: 1">
       <el-row :gutter="10">
-        <el-col :span="12">
+        <el-col :span="24">
           <el-card>
             <div style="text-align: center">
               <el-date-picker
@@ -89,6 +89,16 @@
               <el-button type="primary" plain @click="search" style="margin-left: 10px">查  询</el-button>
             </div>
             <div style="width: 100%; height: 350px; margin-top: 10px" id="line"></div>
+          </el-card>
+        </el-col>
+      </el-row>
+    </div>
+
+    <div style="margin-top: 10px;">
+      <el-row :gutter="10">
+        <el-col :span="12">
+          <el-card>
+            <div id="hoop" style="width: 100%; height: 390px"></div>
           </el-card>
         </el-col>
 
@@ -111,10 +121,11 @@ const sales = {
     left: 'center'
   },
   tooltip: {
-    trigger: 'axis'
+    trigger: 'axis',
   },
   legend: {
-    left: 'left'
+    center: 'center',
+    top: '6%'
   },
   xAxis: {
     type: 'category',
@@ -125,7 +136,7 @@ const sales = {
   },
   series: [
     {
-      name: '销售额',
+      name: '总销售额',
       data: [],
       type: 'line',
       smooth: true,
@@ -141,10 +152,31 @@ const sales = {
       },
     },
     {
-      name: '销量',
+      name: '商品销售额',
+      data: [],
+      type: 'line',
+      smooth: true,
+      lineStyle: {
+        normal: {
+          color: '#228B22'
+        }
+      },
+      itemStyle: {
+        normal: {
+          color: '#228B22'
+        }
+      },
+    },
+    {
+      name: '跑腿销售额',
+      data: [],
+      type: 'line',
+      smooth: true,
+    },
+    {
+      name: '总销量',
       data: [],
       type: 'bar',
-      barWidth: 35,
       itemStyle: {
         barBorderRadius: [2, 2, 0, 0], //柱体圆角
         color: new echarts.graphic.LinearGradient(
@@ -166,27 +198,21 @@ const sales = {
       }
     },
     {
-      name: '盈利',
+      name: '商品销量',
       data: [],
-      type: 'line',
-      smooth: true,
-      lineStyle: {
-        normal: {
-          color: '#228B22'
-        }
-      },
-      itemStyle: {
-        normal: {
-          color: '#228B22'
-        }
-      },
-    }
+      type: 'bar',
+    },
+    {
+      name: '跑腿销量',
+      data: [],
+      type: 'bar',
+    },
   ]
 }
 
-const types = {
+const goodsType = {
   title: {
-    text: '分类销量',
+    text: '商品分类销量',
     subtext: '比例图',
     left: 'center'
   },
@@ -221,6 +247,43 @@ const types = {
   ]
 };
 
+const errandTypes = {
+  title: {
+    text: '跑腿分类销量',
+    subtext: '比例图',
+    left: 'center'
+  },
+  tooltip: {
+    trigger: 'item'
+  },
+  legend: {
+    orient: 'vertical',
+    left: 'left'
+  },
+  series: [
+    {
+      name: 'Access From',
+      type: 'pie',
+      center: ['50%','55%'],
+      radius: ['30%', '50%'],
+      data: [],
+      label: {
+        show: true,
+        formatter(param) {
+          return param.name + '(' + param.percent +'%)';
+        }
+      },
+      emphasis: {
+        itemStyle: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.5)'
+        }
+      }
+    }
+  ]
+};
+
 export default {
   name: 'Home',
   data() {
@@ -231,11 +294,11 @@ export default {
       allUser: 0,
       allComplete: 0,
       allDeal: 0,
-      allProfit: 0,
+      allPost: 0,
       yesterdayUser: 0,
       yesterdayComplete: 0,
       yesterdayDeal: 0,
-      yesterdayProfit: 0,
+      yesterdayPost: 0,
       pickerOptions: {
         shortcuts: [{
           text: '最近一周',
@@ -278,8 +341,8 @@ export default {
         this.yesterdayDeal = res.data.order.yesterdayDeal
         this.allComplete = res.data.complete.allComplete
         this.yesterdayComplete = res.data.complete.yesterdayComplete
-        this.allProfit = res.data.profit.allProfit
-        this.yesterdayProfit = res.data.profit.yesterdayProfit
+        this.allPost = res.data.post.allPost
+        this.yesterdayPost = res.data.post.yesterdayPost
       }else {
         this.$message.error(res.msg)  // 弹出错误的信息
       }
@@ -304,6 +367,9 @@ export default {
       let lineDom = document.getElementById('line');
       let lineChart = echarts.init(lineDom);
 
+      let hoopDom = document.getElementById('hoop');
+      let hoopChart = echarts.init(hoopDom);
+
       let pieDom = document.getElementById('pie');
       let pieChart = echarts.init(pieDom);
 
@@ -316,15 +382,23 @@ export default {
         if (res.code === '200'){
           // 折线
           sales.xAxis.data = res.data.line?.map(v => v.time) || []
-          sales.series[0].data = res.data.line?.map(v => v.value) || []
-          sales.series[1].data = res.data.line?.map(v => v.amount) || []
-          sales.series[2].data = res.data.line?.map(v => v.profit) || []
+          sales.series[0].data = res.data.line?.map(v => v.allSum) || []
+          sales.series[1].data = res.data.line?.map(v => v.goodsSum) || []
+          sales.series[2].data = res.data.line?.map(v => v.taskSum) || []
+          sales.series[3].data = res.data.line?.map(v => v.allAmount) || []
+          sales.series[4].data = res.data.line?.map(v => v.goodsAmount) || []
+          sales.series[5].data = res.data.line?.map(v => v.errandAmount) || []
           lineChart.setOption(sales)
 
+          //环图
+          goodsType.series[0].data = res.data?.hoop || []
+          goodsType.title.subtext = '(' + this.date[0] + '~' +this.date[1] + ')'
+          hoopChart.setOption(goodsType)
+
           // 饼图
-          types.series[0].data = res.data?.pie || []
-          types.title.subtext = '(' + this.date[0] + '~' +this.date[1] + ')'
-          pieChart.setOption(types)
+          errandTypes.series[0].data = res.data?.pie || []
+          errandTypes.title.subtext = '(' + this.date[0] + '~' +this.date[1] + ')'
+          pieChart.setOption(errandTypes)
         }
       })
     },

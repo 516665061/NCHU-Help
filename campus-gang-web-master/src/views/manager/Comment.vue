@@ -41,7 +41,6 @@
 
       <div class="pagination">
          <el-pagination
-            :hide-on-single-page="true"
             background
             @current-change="handleCurrentChange"
             :current-page="pageNum"
@@ -64,7 +63,7 @@ export default {
     return {
       tableData: [],  // 所有的数据
       pageNum: 1,   // 当前的页码
-      pageSize: 8,  // 每页显示的个数
+      pageSize: 5,  // 每页显示的个数
       total: 0,
       content: null,
       userName: null,

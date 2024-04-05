@@ -6,13 +6,17 @@ import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.example.common.Result;
+import com.example.common.enums.OrderStatusEnum;
+import com.example.common.enums.OrdersPropertyEnum;
 import com.example.common.enums.ResultCodeEnum;
 import com.example.common.enums.RoleEnum;
 import com.example.entity.Account;
 import com.example.entity.Orders;
+import com.example.entity.Posts;
 import com.example.entity.User;
 import com.example.service.AdminService;
 import com.example.service.OrdersService;
+import com.example.service.PostsService;
 import com.example.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +40,8 @@ public class WebController {
     @Resource
     private OrdersService ordersService;
 
+    @Resource
+    private PostsService postsService;
     /**
      * 登录
      */
@@ -105,24 +111,47 @@ public class WebController {
         List<Dict> lineList = new ArrayList<>();
         for (String time : timeList) {
             //统计当前日期的所有金额总数和
-            BigDecimal sum = list.stream().filter(orders -> orders.getTime().substring(0, 10).equals(time) && !(orders.getStatus().equals("待接单") || orders.getStatus().equals("已取消"))).
+            //总销售额
+            BigDecimal allSum = list.stream().filter(orders -> time.equals(orders.getTime().substring(0, 10)) && !(OrderStatusEnum.NO_ACCEPT.getValue().equals(orders.getStatus()) || OrderStatusEnum.CANCEL.getValue().equals(orders.getStatus()) || OrderStatusEnum.NOTPAY.getValue().equals(orders.getStatus()))).
                     map(Orders::getPrice).reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
-            Long amount = list.stream().filter(orders -> orders.getTime().substring(0, 10).equals(time) && !(orders.getStatus().equals("待接单") || orders.getStatus().equals("已取消"))).count();
+            //商品销售额
+            BigDecimal goodsSum = list.stream().filter(orders -> time.equals(orders.getTime().substring(0, 10)) && OrdersPropertyEnum.GOODS.getValue().equals(orders.getProperty()) && !(OrderStatusEnum.NOTPAY.getValue().equals(orders.getStatus()) || OrderStatusEnum.CANCEL.getValue().equals(orders.getStatus()))).
+                    map(Orders::getPrice).reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
+            //跑腿销售额
+            BigDecimal taskSum = list.stream().filter(orders -> time.equals(orders.getTime().substring(0, 10)) && !(OrderStatusEnum.NO_ACCEPT.getValue().equals(orders.getStatus()) || OrderStatusEnum.CANCEL.getValue().equals(orders.getStatus())) && OrdersPropertyEnum.ERRAND.getValue().equals(orders.getProperty())).
+                    map(Orders::getPrice).reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
+            //总销量
+            Long allAmount = list.stream().filter(orders -> time.equals(orders.getTime().substring(0, 10)) && !(OrderStatusEnum.NO_ACCEPT.getValue().equals(orders.getStatus()) || OrderStatusEnum.CANCEL.getValue().equals(orders.getStatus()) || OrderStatusEnum.NOTPAY.getValue().equals(orders.getStatus()))).count();
+
+             //商品销量
+            Long goodsAmount = list.stream().filter(orders -> time.equals(orders.getTime().substring(0, 10)) && !OrderStatusEnum.NOTPAY.getValue().equals(orders.getStatus()) && OrdersPropertyEnum.GOODS.getValue().equals(orders.getProperty())).count();
+            //跑腿销量
+            Long errandAmount = list.stream().filter(orders -> time.equals(orders.getTime().substring(0, 10)) && OrdersPropertyEnum.ERRAND.getValue().equals(orders.getProperty()) && !(OrderStatusEnum.NO_ACCEPT.getValue().equals(orders.getStatus()) || OrderStatusEnum.CANCEL.getValue().equals(orders.getStatus()))).count();
+
             Dict dict = Dict.create();
-            Dict line = dict.set("time", time).set("value", sum).set("amount", amount);
+            Dict line = dict.set("time", time).set("allSum", allSum).set("goodsSum",goodsSum).set("taskSum",taskSum).set("allAmount", allAmount).set("goodsAmount",goodsAmount).set("errandAmount",errandAmount);
             lineList.add(line);
         }
 
         List<Dict> pieList = new ArrayList<>();
-        Set<String> types = list.stream().map(Orders::getType).collect(Collectors.toSet());
+        Set<String> types = list.stream().filter(orders -> OrdersPropertyEnum.ERRAND.getValue().equals(orders.getProperty())).map(Orders::getType).collect(Collectors.toSet());
         for (String type : types) {
-            Long share = list.stream().filter(orders -> orders.getType().equals(type) && !(orders.getStatus().equals("待接单") || orders.getStatus().equals("已取消"))).count();
+            Long share = list.stream().filter(orders -> type.equals(orders.getType()) && !(OrderStatusEnum.NO_ACCEPT.getValue().equals(orders.getStatus()) || OrderStatusEnum.CANCEL.getValue().equals(orders.getStatus())) && OrdersPropertyEnum.ERRAND.getValue().equals(orders.getProperty())).count();
             Dict dict = Dict.create();
             Dict pie = dict.set("name", type).set("value", share);
             pieList.add(pie);
         }
 
-        Dict res = Dict.create().set("line", lineList).set("pie", pieList);
+        List<Dict> hoopList = new ArrayList<>();
+        Set<String> hTypes = list.stream().filter(orders -> OrdersPropertyEnum.GOODS.getValue().equals(orders.getProperty())).map(Orders::getType).collect(Collectors.toSet());
+        for (String type : hTypes) {
+            Long share = list.stream().filter(orders -> type.equals(orders.getType()) && !(OrderStatusEnum.NOTPAY.getValue().equals(orders.getStatus()) || OrderStatusEnum.CANCEL.getValue().equals(orders.getStatus())) && OrdersPropertyEnum.GOODS.getValue().equals(orders.getProperty())).count();
+            Dict dict = Dict.create();
+            Dict hoop = dict.set("name", type).set("value", share);
+            hoopList.add(hoop);
+        }
+
+        Dict res = Dict.create().set("line", lineList).set("pie", pieList).set("hoop",hoopList);
         return Result.success(res);
     }
 
@@ -133,24 +162,28 @@ public class WebController {
         List<User> userList = userService.selectAll(user);
         userMap.put("allUser", Long.valueOf(userList.size()));
         System.out.println(DateUtil.yesterday().toString());
-        userMap.put("yesterdayUser", userList.stream().filter(user1 -> user1.getTime().substring(0, 10).equals(DateUtil.yesterday().toString().substring(0, 10))).count());
+        userMap.put("yesterdayUser", userList.stream().filter(user1 -> DateUtil.yesterday().toString().substring(0, 10).equals(user1.getTime().substring(0, 10))).count());
 
         Map<String, Double> orderMap = new HashMap<String, Double>();
         Orders orders = new Orders();
         List<Orders> ordersList = ordersService.selectAll(orders);
-        orderMap.put("allDeal", ordersList.stream().filter(orders1 -> !(orders1.getStatus().equals("已取消") || orders1.getStatus().equals("待接单"))).map(Orders::getPrice).reduce(BigDecimal::add).orElse(BigDecimal.ZERO).doubleValue());
-        orderMap.put("yesterdayDeal", ordersList.stream().filter(orders1 -> orders1.getTime().substring(0, 10).equals(DateUtil.yesterday().toString().substring(0, 10)) && !(orders1.getStatus().equals("已取消") || orders1.getStatus().equals("待接单"))).map(Orders::getPrice).reduce(BigDecimal::add).orElse(BigDecimal.ZERO).doubleValue());
+        orderMap.put("allDeal", ordersList.stream().filter(orders1 -> !(OrderStatusEnum.CANCEL.getValue().equals(orders1.getStatus()) || OrderStatusEnum.NO_ACCEPT.getValue().equals(orders1.getStatus()) || OrderStatusEnum.NOTPAY.getValue().equals(orders.getStatus()))).map(Orders::getPrice).reduce(BigDecimal::add).orElse(BigDecimal.ZERO).doubleValue());
+        orderMap.put("yesterdayDeal", ordersList.stream().filter(orders1 -> DateUtil.yesterday().toString().substring(0, 10).equals(orders1.getTime().substring(0, 10)) && !(OrderStatusEnum.CANCEL.getValue().equals(orders1.getStatus()) || OrderStatusEnum.NO_ACCEPT.getValue().equals(orders1.getStatus()) || OrderStatusEnum.NOTPAY.getValue().equals(orders.getStatus()))).map(Orders::getPrice).reduce(BigDecimal::add).orElse(BigDecimal.ZERO).doubleValue());
 
-        Map<String, Double> profitMap = new HashMap<String, Double>();
+        Map<String, Long> postMap = new HashMap<String, Long>();
+        Posts posts = new Posts();
+        List<Posts> postsList = postsService.selectAll(posts);
+        postMap.put("allPost", Long.valueOf(postsList.size()));
+        postMap.put("yesterdayPost", postsList.stream().filter(posts1 -> DateUtil.yesterday().toString().substring(0,10).equals(posts1.getTime().substring(0,10))).count());
 
         Map<String, Long> completeMap = new HashMap<String, Long>();
-        completeMap.put("allComplete", ordersList.stream().filter(orders1 -> !(orders1.getStatus().equals("已取消") || orders1.getStatus().equals("待接单"))).count());
-        completeMap.put("yesterdayComplete", ordersList.stream().filter(orders1 -> orders1.getTime().substring(0, 10).equals(DateUtil.yesterday().toString().substring(0, 10)) && !(orders1.getStatus().equals("已取消") || orders1.getStatus().equals("待接单"))).count());
+        completeMap.put("allComplete", ordersList.stream().filter(orders1 -> !(OrderStatusEnum.CANCEL.getValue().equals(orders1.getStatus()) || OrderStatusEnum.NO_ACCEPT.getValue().equals(orders1.getStatus()))).count());
+        completeMap.put("yesterdayComplete", ordersList.stream().filter(orders1 -> DateUtil.yesterday().toString().substring(0, 10).equals(orders1.getTime().substring(0, 10)) && !(OrderStatusEnum.CANCEL.getValue().equals(orders1.getStatus()) || OrderStatusEnum.NO_ACCEPT.getValue().equals(orders1.getStatus()))).count());
 
         Map<String, Map> res = new HashMap<String, Map>();
         res.put("user", userMap);
         res.put("order", orderMap);
-        res.put("profit", profitMap);
+        res.put("post", postMap);
         res.put("complete", completeMap);
         return Result.success(res);
     }

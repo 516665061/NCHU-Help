@@ -33,36 +33,56 @@
     <div class="manager-main">
       <!--  侧边栏  -->
       <div class="manager-main-left">
-        <el-menu router style="border: none" :default-active="$route.path">
+        <el-menu router style="border: none" :default-active="$route.path" unique-opened="true">
           <el-menu-item index="/admin/home">
             <i class="el-icon-s-home"></i>
             <span slot="title">系统首页</span>
           </el-menu-item>
-          <el-submenu index="info">
+          <el-submenu index="set">
             <template slot="title">
-              <i class="el-icon-menu"></i><span>信息管理</span>
+              <i class="el-icon-s-tools"></i><span>网站设置</span>
             </template>
             <el-menu-item index="/admin/slides">幻灯片管理</el-menu-item>
-            <el-menu-item index="/admin/orders">订单信息</el-menu-item>
-            <el-menu-item index="/admin/address">地址信息</el-menu-item>
-            <el-menu-item index="/admin/certification">骑手认证</el-menu-item>
-            <el-menu-item index="/admin/records">收支明细</el-menu-item>
             <el-menu-item index="/admin/notice">公告信息</el-menu-item>
-            <el-menu-item index="/admin/comment">评价管理</el-menu-item>
+          </el-submenu>
+
+          <el-submenu index="market">
+            <template slot="title">
+              <i class="el-icon-goods"></i><span>商城管理</span>
+            </template>
             <el-menu-item index="/admin/goods">商品信息</el-menu-item>
-            <el-menu-item index="/admin/category">分类信息</el-menu-item>
-            <el-menu-item index="/admin/circles">圈子信息</el-menu-item>
-            <el-menu-item index="/admin/lost">失物招领</el-menu-item>
+            <el-menu-item index="/admin/orders">订单信息</el-menu-item>
             <el-menu-item index="/admin/evaluate">商品评价</el-menu-item>
+            <el-menu-item index="/admin/category">模块分类</el-menu-item>
+
+          </el-submenu>
+
+          <el-submenu index="lost">
+            <template slot="title">
+              <i class="el-icon-eleme"></i><span>跑腿管理</span>
+            </template>
+            <el-menu-item index="/admin/tasks">跑腿订单</el-menu-item>
+            <el-menu-item index="/admin/comment">评价管理</el-menu-item>
+            <el-menu-item index="/admin/certification">骑手认证</el-menu-item>
+          </el-submenu>
+
+          <el-submenu index="post">
+            <template slot="title">
+              <i class="el-icon-bangzhu"></i><span>失物与社区</span>
+            </template>
+            <el-menu-item index="/admin/lost">失物招领</el-menu-item>
             <el-menu-item index="/admin/posts">社区帖子</el-menu-item>
+            <el-menu-item index="/admin/circles">圈子信息</el-menu-item>
           </el-submenu>
 
           <el-submenu index="user">
             <template slot="title">
-              <i class="el-icon-menu"></i><span>用户管理</span>
+              <i class="el-icon-s-custom"></i><span>用户管理</span>
             </template>
             <el-menu-item index="/admin/adminInfo">管理员信息</el-menu-item>
             <el-menu-item index="/admin/user">用户信息</el-menu-item>
+            <el-menu-item index="/admin/records">收支明细</el-menu-item>
+            <el-menu-item index="/admin/address">地址信息</el-menu-item>
           </el-submenu>
         </el-menu>
       </div>
