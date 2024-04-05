@@ -72,7 +72,7 @@ const router = new VueRouter({
 // 路由守卫
 router.beforeEach((to ,from, next) => {
   let adminPaths = ['/admin/home','/admin/adminInfo','/admin/adminPerson','/admin/password','/admin/notice','/admin/user','/admin/orders','/admin/address','/admin/certification','/admin/records','/admin/comment','/admin/slides']
-  let userPaths = ['/orders','/records','/person','/certification']
+  let userPaths = ['/orders','/person','/certification','/market','/lost']
   let user = JSON.parse(localStorage.getItem("xm-user") || '{}');
   if ((user.role !== 'ADMIN' && adminPaths.includes(to.path))|| (user.role !== 'USER' && userPaths.includes(to.path))) {
     next('/403')
