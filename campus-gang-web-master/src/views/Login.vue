@@ -17,7 +17,7 @@
         </el-form-item>
         <el-form-item prop="code">
           <div style="display: flex">
-            <el-input placeholder="请输入验证码(注意区分大小写)" prefix-icon="el-icon-circle-check" size="medium" style="flex: 1" v-model="form.code"></el-input>
+            <el-input placeholder="请输入验证码" prefix-icon="el-icon-circle-check" size="medium" style="flex: 1" v-model="form.code"></el-input>
             <div style="flex: 1; height: 36px">
               <valid-code @update:value="getCode" />
             </div>
