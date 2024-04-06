@@ -54,6 +54,7 @@ const routes = [
       { path: 'posts', name:'Posts', meta:{name: '论坛帖子'}, component: () => import('../views/front/Posts') },
       { path: 'postsDetail', name:'PostsDetail', meta:{name: '帖子详情'}, component: () => import('../views/front/PostsDetail') },
       { path: 'chat', name:'Chat', meta:{name: '聊天'}, component: () => import('../views/front/Chat') },
+      { path: 'search', name:'Search', meta:{name: '查找'}, component: () => import('../views/front/Search') },
       { path: 'person', name:'FPerson', meta:{name: '个人中心'}, component: () => import('../views/front/Person') },
     ]
   },
