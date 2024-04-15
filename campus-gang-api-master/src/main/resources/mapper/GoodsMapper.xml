@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.GoodsMapper">
+
+    <sql id="Base_Column_List">
+        id,name,price,content,address,img,date,status,category,user_id,sale_status,read_count
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.Goods">
+        select
+        goods.*, user.name as userName
+        from goods
+        left join user on goods.user_id = user.id
+        <where>
+            <if test="name != null"> and goods.name like concat('%', #{name}, '%')</if>
+            <if test="category != null"> and goods.category = #{category}</if>
+            <if test="userId != null"> and goods.user_id = #{userId}</if>
+        </where>
+        order by goods.id desc
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Goods">
+        select
+        goods.*, user.name as userName
+        from goods
+        left join user on goods.user_id = user.id
+        where goods.id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from goods
+        where  id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Goods" useGeneratedKeys="true" keyProperty="id">
+        insert into goods
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="price != null">price,</if>
+            <if test="content != null">content,</if>
+            <if test="address != null">address,</if>
+            <if test="img != null">img,</if>
+            <if test="date != null">date,</if>
+            <if test="status != null">status,</if>
+            <if test="category != null">category,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="saleStatus != null">sale_status,</if>
+            <if test="readCount != null">read_count,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="price != null">#{price},</if>
+            <if test="content != null">#{content},</if>
+            <if test="address != null">#{address},</if>
+            <if test="img != null">#{img},</if>
+            <if test="date != null">#{date},</if>
+            <if test="status != null">#{status},</if>
+            <if test="category != null">#{category},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="saleStatus != null">#{saleStatus},</if>
+            <if test="readCount != null">#{readCount},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Goods">
+        update goods
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="img != null">
+                img = #{img},
+            </if>
+            <if test="date != null">
+                date = #{date},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="category != null">
+                category = #{category},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="saleStatus != null">
+                sale_status = #{saleStatus},
+            </if>
+            <if test="readCount != null">
+                read_count = #{readCount},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateReadCount">
+        update
+        goods
+        set read_count = read_count + 1
+        where id = #{id}
+    </update>
+
+    <select id="selectFrontAll" resultType="com.example.entity.Goods">
+        select
+        goods.*, user.name as userName
+        from goods
+        left join user on goods.user_id = user.id
+        <where>
+            goods.status = '通过' and goods.sale_status = '上架'
+            <if test="name != null"> and goods.name like concat('%', #{name}, '%')</if>
+            <if test="category != null"> and goods.category = #{category}</if>
+        </where>
+        <if test="sort == '最新'"> order by goods.id desc</if>
+        <if test="sort == '最热'"> order by goods.read_count desc</if>
+    </select>
+</mapper>

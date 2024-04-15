@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.EvaluateMapper">
+
+    <sql id="Base_Column_List">
+        id,content,user_id,pid,time,fid,module,root_id
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.Evaluate">
+        select
+        <include refid="Base_Column_List" />
+        from evaluate
+        <where>
+            <if test="id != null"> and id = #{id}</if>
+            <if test="content != null"> and content like concat('%', #{content}, '%')</if>
+            <if test="userId != null"> and user_id = #{userId}</if>
+            <if test="pid != null"> and pid = #{pid}</if>
+            <if test="time != null"> and time like concat('%', #{time}, '%')</if>
+            <if test="fid != null"> and fid = #{fid}</if>
+            <if test="module != null"> and module like concat('%', #{module}, '%')</if>
+            <if test="rootId != null"> and root_id = #{rootId}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Evaluate">
+        select
+        <include refid="Base_Column_List" />
+        from evaluate
+        where id = #{id}
+    </select>
+
+    <select id="selectRoot" resultType="com.example.entity.Evaluate">
+        select
+        evaluate.*, user.name as userName, user.avatar as avatar
+        from evaluate
+        left join user on evaluate.user_id = user.id
+        where evaluate.pid is null and evaluate.fid = #{fid} and evaluate.module = #{module}
+        order by evaluate.id desc
+    </select>
+    <select id="selectByRootId" resultType="com.example.entity.Evaluate">
+        select
+        e1.*, u1.name as userName, u1.avatar as avatar, u2.name as parentUserName
+        from evaluate e1
+        left join user u1 on e1.user_id = u1.id
+        left join evaluate e2 on e1.pid = e2.id
+        left join user u2 on e2.user_id = u2.id
+        where e1.pid is not null and e1.root_id = #{rootId}
+        order by e1.id desc
+    </select>
+    <select id="selectCount" resultType="java.lang.Integer">
+        select
+        count(*)
+        from evaluate
+        where fid = #{fid} and module = #{module}
+    </select>
+    <select id="selectByPid" resultType="com.example.entity.Evaluate">
+        select * from evaluate where pid = #{pid}
+    </select>
+
+    <delete id="deleteById">
+        delete from evaluate
+        where  id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Evaluate" useGeneratedKeys="true" keyProperty="id">
+        insert into evaluate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="content != null">content,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="pid != null">pid,</if>
+            <if test="time != null">time,</if>
+            <if test="fid != null">fid,</if>
+            <if test="module != null">module,</if>
+            <if test="rootId != null">root_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="content != null">#{content},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="pid != null">#{pid},</if>
+            <if test="time != null">#{time},</if>
+            <if test="fid != null">#{fid},</if>
+            <if test="module != null">#{module},</if>
+            <if test="rootId != null">#{rootId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Evaluate">
+        update evaluate
+        <set>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="pid != null">
+                pid = #{pid},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+            <if test="fid != null">
+                fid = #{fid},
+            </if>
+            <if test="module != null">
+                module = #{module},
+            </if>
+            <if test="rootId != null">
+                root_id = #{rootId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>
