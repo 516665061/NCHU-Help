@@ -47,7 +47,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .ValidCode{
   display: flex;
   justify-content: center;

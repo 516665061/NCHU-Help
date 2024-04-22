@@ -36,11 +36,24 @@
 
 <script>
 import ValidCode from "@/views/ValidCode.vue";
+import {rules} from "postcss-pxtorem/.eslintrc";
 
 export default {
   name: "Register",
   components: {ValidCode},
   data() {
+    const validatePass = (rule, value, callback) => {
+      const regex = new RegExp("^(?![a-zA-Z]+$)(?!\\d+$)(?![^\\da-zA-Z\\s]+$).{8,16}$");
+      if (value === "") {
+        callback(new Error("请输⼊密码"));
+      } else if (value.length < 8 || value.length > 16) {
+        callback(new Error("请输⼊8~16位密码"));
+      } else if (!regex.test(value)) {
+        callback(new Error("密码至少包含字母、数字和特殊字符任意两种"));
+      } else {
+        callback();
+      }
+    };
     // 验证码校验
     const validatePassword = (rule, confirmPass, callback) => {
       if (confirmPass === '') {
@@ -66,9 +79,24 @@ export default {
       rules: {
         username: [
           { required: true, message: '请输入账号', trigger: 'blur' },
+          {
+            trigger: 'blur',
+            validator:(rule, value, callback) => {
+              var regex = new RegExp("^[0-9a-zA-Z]+$");
+              if (value === "") {
+                callback(new Error("用户名"));
+              } else if (value.length < 4 || value.length > 11) {
+                callback(new Error("请输⼊4~11位用户名"));
+              } else if (!regex.test(value)) {
+                callback(new Error("用户名只能为英文字母和数字"));
+              } else {
+                callback();
+              }
+            }
+          }
         ],
         password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
+          { validator: validatePass, trigger: 'blur' }
         ],
         confirmPass: [
           { validator: validatePassword, trigger: 'blur' }

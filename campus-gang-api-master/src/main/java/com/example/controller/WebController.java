@@ -14,10 +14,7 @@ import com.example.entity.Account;
 import com.example.entity.Orders;
 import com.example.entity.Posts;
 import com.example.entity.User;
-import com.example.service.AdminService;
-import com.example.service.OrdersService;
-import com.example.service.PostsService;
-import com.example.service.UserService;
+import com.example.service.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -33,6 +30,9 @@ public class WebController {
 
     @Resource
     private AdminService adminService;
+
+    @Resource
+    private AuditorService auditorService;
 
     @Resource
     private UserService userService;
@@ -53,7 +53,9 @@ public class WebController {
         }
         if (RoleEnum.ADMIN.name().equals(account.getRole())) {
             account = adminService.login(account);
-        } else if (RoleEnum.USER.name().equals(account.getRole())) {
+        } else if (RoleEnum.AUDITOR.name().equals(account.getRole())) {
+            account = auditorService.login(account);
+        }else if (RoleEnum.USER.name().equals(account.getRole())) {
             account = userService.login(account);
         } else {
             return Result.error(ResultCodeEnum.USER_NOT_EXIST_ERROR);
@@ -90,7 +92,9 @@ public class WebController {
         }
         if (RoleEnum.ADMIN.name().equals(account.getRole())) {
             adminService.updatePassword(account);
-        } else if (RoleEnum.USER.name().equals(account.getRole())) {
+        } else if (RoleEnum.AUDITOR.name().equals(account.getRole())) {
+            auditorService.updatePassword(account);
+        }else if (RoleEnum.USER.name().equals(account.getRole())) {
             userService.updatePassword(account);
         }
         return Result.success();

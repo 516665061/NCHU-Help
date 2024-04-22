@@ -57,7 +57,7 @@
 
           </el-submenu>
 
-          <el-submenu index="lost">
+          <el-submenu index="errand">
             <template slot="title">
               <i class="el-icon-eleme"></i><span>跑腿管理</span>
             </template>
@@ -80,6 +80,7 @@
               <i class="el-icon-s-custom"></i><span>用户管理</span>
             </template>
             <el-menu-item index="/admin/adminInfo">管理员信息</el-menu-item>
+            <el-menu-item index="/admin/auditorInfo">审核员信息</el-menu-item>
             <el-menu-item index="/admin/user">用户信息</el-menu-item>
             <el-menu-item index="/admin/records">收支明细</el-menu-item>
             <el-menu-item index="/admin/address">地址信息</el-menu-item>

@@ -12,6 +12,7 @@
         <el-form-item prop="role">
           <el-select prefix-icon="el-icon-key" v-model="form.role" placeholder="登录类型">
             <el-option label="用户" value="USER"></el-option>
+            <el-option label="审核员" value="AUDITOR"></el-option>
             <el-option label="管理员" value="ADMIN"></el-option>
           </el-select>
         </el-form-item>
@@ -92,6 +93,8 @@ export default {
                 this.$router.push('/')
               }else if (res.data.role === 'ADMIN') {
                 this.$router.push('/admin')
+              }else if (res.data.role === 'AUDITOR') {
+                this.$router.push('/auditor')
               }
               this.$message.success('登录成功')
             } else {

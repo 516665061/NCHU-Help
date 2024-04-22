@@ -17,6 +17,7 @@
             <if test="name != null"> and goods.name like concat('%', #{name}, '%')</if>
             <if test="category != null"> and goods.category = #{category}</if>
             <if test="userId != null"> and goods.user_id = #{userId}</if>
+            <if test="status != null"> and goods.status = #{status}</if>
         </where>
         order by goods.id desc
     </select>

@@ -18,6 +18,7 @@ const routes = [
     children: [
       { path: 'home', name: 'Home', meta: { name: '系统首页' }, component: () => import('../views/manager/Home') },
       { path: 'adminInfo', name: 'Admin', meta: { name: '管理员信息' }, component: () => import('../views/manager/Admin') },
+      { path: 'auditorInfo', name: 'Auditor', meta: { name: '审核员信息' }, component: () => import('../views/manager/Auditor.vue') },
       { path: 'adminPerson', name: 'AdminPerson', meta: { name: '个人信息' }, component: () => import('../views/manager/AdminPerson') },
       { path: 'password', name: 'Password', meta: { name: '修改密码' }, component: () => import('../views/manager/Password') },
       { path: 'notice', name: 'Notice', meta: { name: '公告信息' }, component: () => import('../views/manager/Notice') },
@@ -35,6 +36,18 @@ const routes = [
       { path: 'lost', name: 'Lost', meta: {name: '失物招领信息'}, component: () => import('../views/manager/Lost') },
       { path: 'evaluate', name: 'Evaluate', meta: {name: '商品评价'}, component: () => import('../views/manager/Evaluate') },
       { path: 'posts', name: 'Posts', meta: {name: '社区帖子'}, component: () => import('../views/manager/Posts')},
+    ]
+  },{
+    path: '/auditor',
+    name: 'Auditor',
+    redirect: '/auditor/goods',  // 重定向到主页
+    component: () => import('../views/Auditor'),
+    children: [
+      { path: 'auditorPerson', name: 'AuditorPerson', meta: { name: '个人信息' }, component: () => import('../views/auditor/AuditorPerson') },
+      { path: 'password', name: 'AuditorPassword', meta: { name: '修改密码' }, component: () => import('../views/auditor/Password') },
+      { path: 'goods', name: 'AuditorGoods', meta: {name: '商品信息'}, component: () => import('../views/auditor/Goods') },
+      { path: 'certification', name: 'AuditorCertification', meta: {name: '骑手认证'}, component: () => import('../views/auditor/Certification') },
+      { path: 'posts', name: 'AuditorPosts', meta: {name: '社区帖子'}, component: () => import('../views/auditor/Posts')},
     ]
   },
   {
@@ -54,7 +67,6 @@ const routes = [
       { path: 'posts', name:'Posts', meta:{name: '论坛帖子'}, component: () => import('../views/front/Posts') },
       { path: 'postsDetail', name:'PostsDetail', meta:{name: '帖子详情'}, component: () => import('../views/front/PostsDetail') },
       { path: 'chat', name:'Chat', meta:{name: '聊天'}, component: () => import('../views/front/Chat') },
-      { path: 'search', name:'Search', meta:{name: '查找'}, component: () => import('../views/front/Search') },
       { path: 'person', name:'FPerson', meta:{name: '个人中心'}, component: () => import('../views/front/Person') },
     ]
   },

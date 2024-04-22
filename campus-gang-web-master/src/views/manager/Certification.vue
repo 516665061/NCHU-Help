@@ -13,29 +13,29 @@
     <div class="table">
       <el-table :data="tableData" @selection-change="handleSelectionChange" :header-cell-style="{'text-align':'center'}">
         <el-table-column type="selection" width="55" align="center"></el-table-column>
-        <el-table-column type="index" :index="indexMethod" label="序号"></el-table-column>
-        <el-table-column prop="userId" label="账号ID"></el-table-column>
-        <el-table-column prop="name" label="名称"></el-table-column>
-        <el-table-column prop="studentNo" label="学号"></el-table-column>
-        <el-table-column prop="avatar"  label="本人照片">
+        <el-table-column type="index" :index="indexMethod" label="序号" align="center"></el-table-column>
+        <el-table-column prop="userId" label="账号ID" align="center"></el-table-column>
+        <el-table-column prop="name" label="名称" align="center"></el-table-column>
+        <el-table-column prop="studentNo" label="学号" align="center"></el-table-column>
+        <el-table-column prop="avatar"  label="本人照片" align="center">
           <template v-slot="scope">
             <el-image :src="scope.row.avatar" style="width: 50px; border-radius: 5px;" :preview-src-list="[scope.row.avatar]"></el-image>
           </template>
         </el-table-column>
-        <el-table-column prop="phone" label="联系方式" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="card1" label="证件照片">
+        <el-table-column prop="phone" label="联系方式" show-overflow-tooltip align="center"></el-table-column>
+        <el-table-column prop="card1" label="证件照片" align="center">
           <template v-slot="scope">
             <el-image :src="scope.row.card" style="width: 50px; border-radius: 5px;" :preview-src-list="[scope.row.card]"></el-image>
           </template>
         </el-table-column>
-        <el-table-column prop="status" label="审核状态">
+        <el-table-column prop="status" label="审核状态" align="center">
           <template v-slot="scope">
             <el-tag type="info" v-if="scope.row.status === '待审核'">待审核</el-tag>
             <el-tag type="success" v-if="scope.row.status === '通过'">通过</el-tag>
             <el-tag type="danger" v-if="scope.row.status === '拒绝'">拒绝</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="reason" label="审核理由" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="reason" label="审核理由" show-overflow-tooltip align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template v-slot="scope">
             <el-button size="mini" type="primary" plain @click="handleEdit(scope.row)">审核</el-button>

@@ -16,6 +16,7 @@
         <where>
             <if test="title != null"> and posts.title like concat('%', #{title}, '%')</if>
             <if test="userId != null"> and posts.user_id = #{userId}</if>
+            <if test="status != null"> and posts.status = #{status}</if>
             <if test="circle != null"> and posts.circle = #{circle}</if>
         </where>
         order by posts.id desc

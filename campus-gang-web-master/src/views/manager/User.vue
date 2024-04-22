@@ -18,10 +18,7 @@
         <el-table-column type="index" :index="indexMethod" label="序号" align="center"></el-table-column>
         <el-table-column label="头像" align="center">
           <template v-slot="scope">
-            <div style="display: flex; align-items: center">
-              <el-image style="width: 40px; height: 40px; border-radius: 50%" v-if="scope.row.avatar"
-                        :src="scope.row.avatar" :preview-src-list="[scope.row.avatar]"></el-image>
-            </div>
+            <el-image style="width: 40px; height: 40px; border-radius: 50%" v-if="scope.row.avatar" :src="scope.row.avatar" :preview-src-list="[scope.row.avatar]"></el-image>
           </template>
         </el-table-column>
         <el-table-column prop="username" label="账号" align="center"></el-table-column>

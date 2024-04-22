@@ -69,6 +69,19 @@ export default {
         callback()
       }
     }
+
+    const validatePass = (rule, value, callback) => {
+      const regex = new RegExp("^(?![a-zA-Z]+$)(?!\\d+$)(?![^\\da-zA-Z\\s]+$).{8,16}$");
+      if (value === "") {
+        callback(new Error("请输⼊密码"));
+      } else if (value.length < 8 || value.length > 16) {
+        callback(new Error("请输⼊8~16位密码"));
+      } else if (!regex.test(value)) {
+        callback(new Error("密码至少包含字母、数字和特殊字符任意两种"));
+      } else {
+        callback();
+      }
+    };
     return {
       user: JSON.parse(localStorage.getItem('xm-user') || '{}'),
       dialogVisible: false,
@@ -78,7 +91,7 @@ export default {
           { required: true, message: '请输入原始密码', trigger: 'blur' },
         ],
         newPassword: [
-          { required: true, message: '请输入新密码', trigger: 'blur' },
+          { validator:validatePass, required: true, trigger: 'blur' },
         ],
         confirmPassword: [
           { validator: validatePassword, required: true, trigger: 'blur' },

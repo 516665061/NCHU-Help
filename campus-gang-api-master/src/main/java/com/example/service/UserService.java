@@ -6,7 +6,6 @@ import com.example.common.enums.RecordsTypeEnum;
 import com.example.common.enums.ResultCodeEnum;
 import com.example.common.enums.RoleEnum;
 import com.example.entity.Account;
-import com.example.entity.Admin;
 import com.example.entity.Certification;
 import com.example.entity.User;
 import com.example.exception.CustomException;

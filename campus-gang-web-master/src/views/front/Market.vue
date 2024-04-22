@@ -4,18 +4,22 @@
     <div class="main-content" style="background-color: #FFFFFF; padding: 10px; position: relative">
 
       <el-button @click="$router.push('/addGoods')" style="position: absolute; top: 20px; right: -150px" size="medium" type="primary" icon="el-icon-plus" plain>发布商品</el-button>
-      <el-button @click="$router.push('/search')" style="position: absolute; top: 60px; right: -150px" size="medium" type="primary" icon="el-icon-search" plain>搜索商品</el-button>
 
       <div style="margin-top: 20px; margin-bottom: 20px">
-        <el-select v-model="category" size="medium" style="width: 200px" @change="loadGoods(1)">
+        <el-input v-model="name" size="mini" placeholder="请输入商品名称" style="width: 300px; margin-right: 10px"></el-input>
+
+        <el-select v-model="category" size="mini" style="width: 200px" @change="loadGoods(1)">
           <el-option value="全部"></el-option>
           <el-option v-for="item in categoryList" :key="item.id" :value="item.name"></el-option>
         </el-select>
 
-        <el-select v-model="sort" size="medium" style="width: 200px; margin-left: 10px" @change="loadGoods(1)">
+        <el-select v-model="sort" size="mini" style="width: 200px; margin-left: 10px" @change="loadGoods(1)">
           <el-option value="最新"></el-option>
           <el-option value="最热"></el-option>
         </el-select>
+
+        <el-button type="primary" size="mini" style="margin-left: 10px" @click="loadGoods(1)">搜 索</el-button>
+        <el-button type="warning" size="mini" @click="reset">重 置</el-button>
       </div>
 
       <div>
@@ -33,6 +37,18 @@
               </div>
           </el-col>
         </el-row>
+
+        <div style="margin: 15px auto">
+          <el-pagination
+              background
+              @current-change="handleCurrentChange"
+              :current-page="pageNum"
+              :page-sizes="[5, 10, 20]"
+              :page-size="pageSize"
+              layout="total, prev, pager, next"
+              :total="total">
+          </el-pagination>
+        </div>
       </div>
 
     </div>
@@ -46,8 +62,12 @@ export default {
   components: {Affix},
   data() {
     return {
+      pageNum: 1,   // 当前的页码
+      pageSize: 9,  // 每页显示的个数
+      total: 0,
       category: '全部',
       sort: '最新',
+      name:'',
       categoryList: [],
       goodsList: [],  // 所有的数据
     }
@@ -69,7 +89,8 @@ export default {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
           category: this.category === '全部' ? null : this.category,
-          sort: this.sort
+          sort: this.sort,
+          name: this.name
         }
       }).then(res => {
         if (res.code === '200') {
@@ -79,6 +100,13 @@ export default {
           this.$message.error(res.msg)
         }
       })
+    },
+    reset() {
+      this.name = null
+      this.loadGoods(1)
+    },
+    handleCurrentChange(pageNum) {
+      this.loadGoods(pageNum)
     },
   }
 }

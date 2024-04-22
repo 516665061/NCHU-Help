@@ -116,6 +116,7 @@ export default {
           }).then(res => {
             if (res.code === '200') {  // 表示成功保存
               this.$message.success('发布成功')
+              this.$router.back()
             } else {
               this.$message.error(res.msg)  // 弹出错误的信息
             }
