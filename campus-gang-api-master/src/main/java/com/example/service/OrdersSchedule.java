@@ -5,6 +5,7 @@ import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import com.example.common.enums.OrderStatusEnum;
 import com.example.common.enums.OrdersPropertyEnum;
+import com.example.entity.GoodsOrders;
 import com.example.entity.Orders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,8 @@ public class OrdersSchedule {
 
     @Resource
     OrdersService ordersService;
+    @Resource
+    GoodsOrdersService goodsOrdersService;
 
     @Resource
     UserService userService;
@@ -30,7 +33,6 @@ public class OrdersSchedule {
         log.info("========================订单扫描任务开始========================");
         Orders params = new Orders();
         params.setStatus(OrderStatusEnum.NO_ACCEPT.getValue());
-        params.setProperty(OrdersPropertyEnum.ERRAND.getValue());
         List<Orders> ordersList = ordersService.selectAll(params);
         for (Orders orders : ordersList){
             String expectTime = orders.getExpectTime();
@@ -40,34 +42,42 @@ public class OrdersSchedule {
                 ordersService.updateById(orders);
             }
         }
-        Orders accomplish = new Orders();
-        accomplish.setStatus(OrderStatusEnum.NO_RECEIVE.getValue());
-        ordersList = ordersService.selectAll(accomplish);
+        Orders accomplish1 = new Orders();
+        accomplish1.setStatus(OrderStatusEnum.NO_RECEIVE.getValue());
+        ordersList = ordersService.selectAll(accomplish1);
         for (Orders orders : ordersList){
             String arriveTime = orders.getArriveTime();
             DateTime dateTime = DateUtil.parseDateTime(arriveTime);
             long seconds = DateUtil.between(dateTime, new Date(), DateUnit.SECOND);// 计算下单的时间跟当前时间的间隔秒数
             if (seconds > 604800){  //超过了7天  自动收货
-                if (OrdersPropertyEnum.ERRAND.getValue().equals(orders.getProperty())){
-                    orders.setStatus(OrderStatusEnum.NO_COMMENT.getValue());
-                }else if (OrdersPropertyEnum.GOODS.getValue().equals(orders.getProperty())){
-                    orders.setStatus(OrderStatusEnum.DONE.getValue());
-                }
+                orders.setStatus(OrderStatusEnum.NO_COMMENT.getValue());
                 ordersService.updateById(orders);
             }
         }
 
-        Orders goods = new Orders();
+        GoodsOrders accomplish2 = new GoodsOrders();
+        accomplish2.setStatus(OrderStatusEnum.NO_RECEIVE.getValue());
+        List<GoodsOrders> goodsOrdersList = goodsOrdersService.selectAll(accomplish2);
+        for (GoodsOrders goodsOrders : goodsOrdersList){
+            String arriveTime = goodsOrders.getArriveTime();
+            DateTime dateTime = DateUtil.parseDateTime(arriveTime);
+            long seconds = DateUtil.between(dateTime, new Date(), DateUnit.SECOND);// 计算下单的时间跟当前时间的间隔秒数
+            if (seconds > 604800){  //超过了7天  自动收货
+                goodsOrders.setStatus(OrderStatusEnum.DONE.getValue());
+                goodsOrdersService.updateById(goodsOrders);
+            }
+        }
+
+        GoodsOrders goods = new GoodsOrders();
         goods.setStatus(OrderStatusEnum.NOTPAY.getValue());
-        goods.setProperty(OrdersPropertyEnum.GOODS.getValue());
-        ordersList = ordersService.selectAll(goods);
-        for (Orders orders : ordersList){
-            String time = orders.getTime();
+        goodsOrdersList = goodsOrdersService.selectAll(goods);
+        for (GoodsOrders goodsOrders : goodsOrdersList){
+            String time = goodsOrders.getTime();
             DateTime dateTime = DateUtil.parseDateTime(time);
             long seconds = DateUtil.between(dateTime, new Date(), DateUnit.SECOND);// 计算下单的时间跟当前时间的间隔秒数
             if (seconds > 86400){  //超过了24小时  自动取消订单
-                orders.setStatus(OrderStatusEnum.CANCEL.getValue());
-                ordersService.updateById(orders);
+                goodsOrders.setStatus(OrderStatusEnum.CANCEL.getValue());
+                goodsOrdersService.updateById(goodsOrders);
             }
         }
         log.info("========================订单扫描任务结束========================");

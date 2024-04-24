@@ -44,6 +44,7 @@ public class Goods implements Serializable {
     private Boolean userCollect;
     private Integer likesCount;
     private Integer collectCount;
+    private String reason;
     /** 排序*/
     private String sort;
 
@@ -189,5 +190,13 @@ public class Goods implements Serializable {
 
     public void setCollectCount(Integer collectCount) {
         this.collectCount = collectCount;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

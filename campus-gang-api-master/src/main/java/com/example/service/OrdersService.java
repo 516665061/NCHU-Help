@@ -40,28 +40,27 @@ public class OrdersService {
     @Resource
     private CertificationService certificationService;
 
-    @Resource
-    private GoodsService goodsService;
-    /**
-     * 新增
-     */
-    public void add(Orders orders) {
-        orders.setProperty(OrdersPropertyEnum.GOODS.getValue());
-        Integer goodsId = orders.getGoodsId();
-        Goods goods = goodsService.selectById(goodsId);
-        orders.setName(goods.getName());
-        orders.setImg(goods.getImg());
-        orders.setAcceptId(goods.getUserId());  //卖家用户ID
-        orders.setPrice(goods.getPrice());
-        orders.setType(goods.getCategory());
-
+    public void addOrder(Orders orders) {
         Account currentUser = TokenUtils.getCurrentUser();
-        orders.setUserId(currentUser.getId());  //下单人的ID
-        orders.setStatus(OrderStatusEnum.NOTPAY.getValue()); // 订单默认是待支付
-        orders.setOrderNo(IdUtil.getSnowflakeNextIdStr()); // 订单号
+        BigDecimal account = currentUser.getAccount();
+        BigDecimal price = orders.getPrice();
+        if (price.compareTo(account) > 0) {
+            throw new CustomException(ResultCodeEnum.ACCOUNT_LIMIT_ERROR);
+        }
+        // 更新账户余额
+        currentUser.setAccount(account.subtract(price));
+        userService.updateById((User) currentUser);
+
+        orders.setUserId(currentUser.getId());
+        orders.setOrderNo(IdUtil.getSnowflakeNextIdStr());  // 设置唯一的订单编号
+        orders.setStatus(OrderStatusEnum.NO_ACCEPT.getValue());
         orders.setTime(DateUtil.now());
         ordersMapper.insert(orders);
+
+        //  记录收支明细
+        RecordsService.addRecord(currentUser,"下单" + orders.getName(),price, RecordsTypeEnum.OUT.getValue());
     }
+
 
     /**
      * 删除
@@ -84,58 +83,26 @@ public class OrdersService {
      */
     @Transactional
     public void updateById(Orders orders) {
-        if (OrdersPropertyEnum.ERRAND.getValue().equals(orders.getProperty())){
-            if (OrderStatusEnum.NO_COMMENT.getValue().equals(orders.getStatus())) {
-                // 用户确认收货了
-                //  打钱
-                Integer acceptId = orders.getAcceptId();
-                User user = userService.selectById(acceptId);
-                user.setAccount(user.getAccount().add(orders.getPrice()));
-                userService.updateById(user);
-                // 记录收支明细
-                RecordsService.addRecord(user,"接单" + orders.getName(), orders.getPrice(), RecordsTypeEnum.INCOME.getValue());
-            } else if (OrderStatusEnum.CANCEL.getValue().equals(orders.getStatus())) {
-                //用户取消订单了
-                //取消订单后需要归还用户金额
-                User user = userService.selectById(orders.getUserId());
-                user.setAccount(user.getAccount().add(orders.getPrice()));
-                userService.updateById(user);
-                //  打钱
-                RecordsService.addRecord(user,"取消订单" + orders.getName(), orders.getPrice(), RecordsTypeEnum.CANCEL.getValue());
-            } else if (OrderStatusEnum.NO_RECEIVE.getValue().equals(orders.getStatus())) {
-                orders.setArriveTime(DateUtil.now());
-            }
-        }else if (OrdersPropertyEnum.GOODS.getValue().equals(orders.getProperty())) {
-            if (OrderStatusEnum.CANCEL.getValue().equals(orders.getStatus())) {
-
-            } else if (OrderStatusEnum.NO_SEND.getValue().equals(orders.getStatus())) {
-                Account currentUser = TokenUtils.getCurrentUser();
-                BigDecimal account = currentUser.getAccount();
-                BigDecimal price = orders.getPrice();
-                if (price.compareTo(account) > 0) {
-                    throw new CustomException(ResultCodeEnum.ACCOUNT_LIMIT_ERROR);
-                }
-                // 更新账户余额
-                currentUser.setAccount(account.subtract(price));
-                userService.updateById((User) currentUser);
-                orders.setStatus(OrderStatusEnum.NO_SEND.getValue());
-                orders.setAcceptTime(DateUtil.now());
-                //  记录收支明细
-                RecordsService.addRecord(currentUser,"购买" + orders.getName(),price, RecordsTypeEnum.OUT.getValue());
-            }else if (OrderStatusEnum.NO_ARRIVE.getValue().equals(orders.getStatus())) {
-
-            } else if (OrderStatusEnum.NO_RECEIVE.getValue().equals(orders.getStatus())) {
-                orders.setArriveTime(DateUtil.now());
-            } else if (OrderStatusEnum.DONE.getValue().equals(orders.getStatus())) {
-                Integer acceptId = orders.getAcceptId();
-                User user = userService.selectById(acceptId);
-                user.setAccount(user.getAccount().add(orders.getPrice()));
-                userService.updateById(user);
-                // 记录收支明细
-                RecordsService.addRecord(user,"出售" + orders.getName(), orders.getPrice(), RecordsTypeEnum.INCOME.getValue());
-            }
+        if (OrderStatusEnum.NO_COMMENT.getValue().equals(orders.getStatus())) {
+            // 用户确认收货了
+            //  打钱
+            Integer acceptId = orders.getAcceptId();
+            User user = userService.selectById(acceptId);
+            user.setAccount(user.getAccount().add(orders.getPrice()));
+            userService.updateById(user);
+            // 记录收支明细
+            RecordsService.addRecord(user,"接单" + orders.getName(), orders.getPrice(), RecordsTypeEnum.INCOME.getValue());
+        } else if (OrderStatusEnum.CANCEL.getValue().equals(orders.getStatus())) {
+            //用户取消订单了
+            //取消订单后需要归还用户金额
+            User user = userService.selectById(orders.getUserId());
+            user.setAccount(user.getAccount().add(orders.getPrice()));
+            userService.updateById(user);
+            //  打钱
+            RecordsService.addRecord(user,"取消订单" + orders.getName(), orders.getPrice(), RecordsTypeEnum.CANCEL.getValue());
+        } else if (OrderStatusEnum.NO_RECEIVE.getValue().equals(orders.getStatus())) {
+            orders.setArriveTime(DateUtil.now());
         }
-
         ordersMapper.updateById(orders);
     }
 
@@ -179,27 +146,7 @@ public class OrdersService {
         return PageInfo.of(list);
     }
 
-    public void addOrder(Orders orders) {
-        orders.setProperty(OrdersPropertyEnum.ERRAND.getValue());
-        Account currentUser = TokenUtils.getCurrentUser();
-        BigDecimal account = currentUser.getAccount();
-        BigDecimal price = orders.getPrice();
-        if (price.compareTo(account) > 0) {
-            throw new CustomException(ResultCodeEnum.ACCOUNT_LIMIT_ERROR);
-        }
-        // 更新账户余额
-        currentUser.setAccount(account.subtract(price));
-        userService.updateById((User) currentUser);
 
-        orders.setUserId(currentUser.getId());
-        orders.setOrderNo(IdUtil.getSnowflakeNextIdStr());  // 设置唯一的订单编号
-        orders.setStatus(OrderStatusEnum.NO_ACCEPT.getValue());
-        orders.setTime(DateUtil.now());
-        ordersMapper.insert(orders);
-
-        //  记录收支明细
-        RecordsService.addRecord(currentUser,"下单" + orders.getName(),price, RecordsTypeEnum.OUT.getValue());
-    }
 
     public void accept(Orders orders) {
         Account currentUser = TokenUtils.getCurrentUser();  // 骑手用户

@@ -58,10 +58,6 @@ public class Orders {
     private Integer addressId;
     /** 到达处联系ID */
     private Integer targetId;
-    /** 订单备注 */
-    private String comment;
-    /**手续费*/
-    private String property;
 
 
     public Certification getCertification() {
@@ -236,14 +232,6 @@ public class Orders {
         this.targetId = targetId;
     }
 
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
     public String getExpectTime() {
         return expectTime;
     }
@@ -276,14 +264,6 @@ public class Orders {
         this.arriveTime = arriveTime;
     }
 
-    public String getProperty() {
-        return property;
-    }
-
-    public void setProperty(String property) {
-        this.property = property;
-    }
-
     public Integer getGoodsId() {
         return goodsId;
     }
@@ -291,4 +271,6 @@ public class Orders {
     public void setGoodsId(Integer goodsId) {
         this.goodsId = goodsId;
     }
+
+
 }

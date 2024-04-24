@@ -5,7 +5,7 @@
 <mapper namespace="com.example.mapper.PostsMapper">
 
     <sql id="Base_Column_List">
-        id,title,content,img,user_id,time,circle,descr,read_count,status
+        id,title,content,img,user_id,time,circle,descr,read_count,status,reason
     </sql>
 
     <select id="selectAll" resultType="com.example.entity.Posts">
@@ -121,6 +121,9 @@
             </if>
             <if test="status != null">
                 status = #{status},
+            </if>
+            <if test="reason != null">
+                reason = #{reason},
             </if>
         </set>
         where id = #{id}

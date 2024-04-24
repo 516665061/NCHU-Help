@@ -26,10 +26,10 @@
 
       <el-table :data="tableData">
         <el-table-column type="index" :index="indexMethod" label="序号" align="center"></el-table-column>
-        <el-table-column prop="name" label="商品名称" show-overflow-tooltip align="center"></el-table-column>
-        <el-table-column prop="img" label="商品图片" show-overflow-tooltip align="center">
+        <el-table-column prop="goodsName" label="商品名称" show-overflow-tooltip align="center"></el-table-column>
+        <el-table-column prop="goodsImg" label="商品图片" show-overflow-tooltip align="center">
           <template v-slot="scope">
-            <el-image v-if="scope.row.img" style="width: 50px;" :src="scope.row.img" :preview-src-list="[scope.row.img]"></el-image>
+            <el-image v-if="scope.row.goodsImg" style="width: 50px;" :src="scope.row.goodsImg" :preview-src-list="[scope.row.goodsImg]"></el-image>
           </template>
         </el-table-column>
         <el-table-column prop="orderNo" label="订单编号" show-overflow-tooltip align="center"></el-table-column>
@@ -39,7 +39,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="time" label="下单时间" show-overflow-tooltip align="center"></el-table-column>
-        <el-table-column prop="acceptTime" label="支付时间" show-overflow-tooltip align="center"></el-table-column>
+        <el-table-column prop="payTime" label="支付时间" show-overflow-tooltip align="center"></el-table-column>
         <el-table-column prop="arriveTime" label="送达时间" show-overflow-tooltip align="center"></el-table-column>
         <el-table-column prop="targetAddress.address" show-overflow-tooltip label="收货地址" align="center"></el-table-column>
         <el-table-column prop="targetAddress.phone" show-overflow-tooltip label="联系方式" align="center"></el-table-column>
@@ -61,9 +61,9 @@
             <el-tag type="success" v-if="scope.row.status === '已完成'">已完成</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="acceptName" label="卖家名称" align="center">
+        <el-table-column prop="salesName" label="卖家名称" align="center">
           <template v-slot="scope">
-            {{ scope.row.acceptName }}
+            {{ scope.row.salesName }}
             <el-tooltip effect="light" content="聊天" placement="right" :hide-after="2000">
               <i @click="chat(scope.row.acceptId)" class="el-icon-chat-dot-round" style="font-size: 18px; margin-left: 3px; cursor: pointer"></i>
             </el-tooltip>
@@ -109,7 +109,7 @@
     <el-dialog title="订单信息" :visible.sync="fromVisible" width="40%" :close-on-click-modal="false" destroy-on-close>
       <el-form :model="form" label-width="100px" style="padding-right: 50px" :rules="rules" ref="formRef">
         <el-form-item label="商品名称" prop="goodsName">
-          <el-input v-model="form.name" placeholder="商品名称"></el-input>
+          <el-input v-model="form.goodsName" placeholder="商品名称"></el-input>
         </el-form-item>
         <el-form-item label="商品图片" prop="goodsImg">
           <el-input v-model="form.goodsImg" placeholder="商品图片"></el-input>
@@ -118,13 +118,13 @@
           <el-input v-model="form.orderNo" placeholder="订单编号"></el-input>
         </el-form-item>
         <el-form-item label="总价" prop="total">
-          <el-input v-model="form.total" placeholder="总价"></el-input>
+          <el-input v-model="form.price" placeholder="总价"></el-input>
         </el-form-item>
         <el-form-item label="下单时间" prop="time">
           <el-input v-model="form.time" placeholder="下单时间"></el-input>
         </el-form-item>
         <el-form-item label="支付时间" prop="payTime">
-          <el-input v-model="form.acceptTime" placeholder="支付时间"></el-input>
+          <el-input v-model="form.payTime" placeholder="支付时间"></el-input>
         </el-form-item>
         <el-form-item label="下单人ID" prop="userId">
           <el-input v-model="form.userId" placeholder="下单人ID"></el-input>
@@ -224,7 +224,7 @@ export default {
     changeStatus(row, status) {
       this.form = JSON.parse(JSON.stringify(row))
       this.form.status = status
-      this.$request.put('orders/update', this.form).then(res => {
+      this.$request.put('goodsOrders/update', this.form).then(res => {
         if (res.code === '200') {  // 表示成功保存
           this.$message.success('操作成功')
           this.load(1)
@@ -246,7 +246,7 @@ export default {
       this.$refs.formRef.validate((valid) => {
         if (valid) {
           this.$request({
-            url: this.form.id ? '/orders/update' : '/orders/add',
+            url: this.form.id ? '/goodsOrders/update' : '/goodsOrders/add',
             method: this.form.id ? 'PUT' : 'POST',
             data: this.form
           }).then(res => {
@@ -263,7 +263,7 @@ export default {
     },
     del(id) {   // 单个删除
       this.$confirm('您确定删除吗？', '确认删除', {type: "warning"}).then(response => {
-        this.$request.delete('/orders/delete/' + id).then(res => {
+        this.$request.delete('/goodsOrders/delete/' + id).then(res => {
           if (res.code === '200') {   // 表示操作成功
             this.$message.success('操作成功')
             this.load(1)
@@ -280,7 +280,7 @@ export default {
         return
       }
       this.$confirm('您确定批量删除这些数据吗？', '确认删除', {type: "warning"}).then(response => {
-        this.$request.delete('/orders/delete/batch', {data: this.ids}).then(res => {
+        this.$request.delete('/goodsOrders/delete/batch', {data: this.ids}).then(res => {
           if (res.code === '200') {   // 表示操作成功
             this.$message.success('操作成功')
             this.load(1)
@@ -296,7 +296,6 @@ export default {
       let parameters = {
         pageNum: this.pageNum,
         pageSize: this.pageSize,
-        property: "商品",
         name: this.name,
         status: this.status,
         orderNo: this.orderNo
@@ -306,7 +305,7 @@ export default {
       } else {
         parameters.acceptId = this.user.id
       }
-      this.$request.get('/orders/selectPage', {
+      this.$request.get('/goodsOrders/selectPage', {
         params: parameters
       }).then(res => {
         if (res.code === '200') {

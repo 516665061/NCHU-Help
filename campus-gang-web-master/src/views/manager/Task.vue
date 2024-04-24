@@ -24,8 +24,11 @@
         </el-table-column>
         <el-table-column prop="type" label="物品类型" align="center"></el-table-column>
         <el-table-column prop="weight" label="物品重量" align="center"></el-table-column>
-        <el-table-column prop="price" label="小费" align="center"></el-table-column>
-        <el-table-column prop="serviceCharge" label="盈利" align="center"></el-table-column>
+        <el-table-column prop="price" label="小费" align="center">
+          <template v-slot="scope">
+            <span style="color: red">￥{{ scope.row.price }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="userName" label="发起人" align="center" show-overflow-tooltip></el-table-column>
         <el-table-column prop="acceptName" label="接单人" align="center" show-overflow-tooltip></el-table-column>
         <el-table-column prop="time" label="创建时间" align="center" show-overflow-tooltip></el-table-column>
@@ -51,7 +54,7 @@
             <el-button type="primary" size="mini" @click="showAddress(scope.row.targetId)">查看</el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="comment" label="订单备注" align="center"></el-table-column>
+        <el-table-column prop="descr" label="订单备注" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="150" fixed="right">
           <template v-slot="scope">
             <el-button size="mini" type="primary" plain @click="handleEdit(scope.row)">编辑</el-button>
@@ -100,9 +103,6 @@
       <el-form :model="address" label-width="100px">
         <el-form-item label="地址: ">
           <div>{{ address.address }}</div>
-        </el-form-item>
-        <el-form-item label="门牌号: ">
-          <div>{{ address.doorNo }}</div>
         </el-form-item>
         <el-form-item label="联系人: ">
           <div>{{ address.userName }}</div>
@@ -213,8 +213,7 @@ export default {
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
-          orderNo: this.orderNo,
-          property: "悬赏"
+          orderNo: this.orderNo
         }
       }).then(res => {
         this.tableData = res.data?.list

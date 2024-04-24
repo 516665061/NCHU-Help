@@ -31,6 +31,7 @@ public class Posts implements Serializable {
     private Integer readCount;
     private String userName;
     private String status;
+    private String reason;
 
     public Integer getId() {
         return id;
@@ -118,5 +119,13 @@ public class Posts implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

@@ -37,10 +37,10 @@
             <el-tag type="danger" v-if="scope.row.status === '拒绝'">拒绝</el-tag>
           </template>
         </el-table-column>
+        <el-table-column prop="reason" label="审核理由" show-overflow-tooltip align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="220">
           <template v-slot="scope">
-            <el-button size="mini" type="primary" plain @click="changeStatus(scope.row, '通过')">通过</el-button>
-            <el-button size="mini" type="danger" plain @click="changeStatus(scope.row, '拒绝')">拒绝</el-button>
+            <el-button size="mini" type="primary" plain @click="handleEdit(scope.row)">审核</el-button>
             <el-button size="mini" type="danger" plain @click="del(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -59,31 +59,18 @@
       </div>
     </div>
 
-    <el-dialog title="帖子" :visible.sync="fromVisible" width="40%" :close-on-click-modal="false" destroy-on-close>
+    <el-dialog title="信息" :visible.sync="fromVisible" width="40%" :close-on-click-modal="false" destroy-on-close>
       <el-form :model="form" label-width="100px" style="padding-right: 50px" :rules="rules" ref="formRef">
-        <el-form-item label="标题" prop="title">
-          <el-input v-model="form.title" placeholder="标题"></el-input>
+        <el-form-item label="名称" prop="name">
+          <el-input v-model="form.name" placeholder="名称" disabled></el-input>
         </el-form-item>
-        <el-form-item label="内容" prop="content">
-          <el-input v-model="form.content" placeholder="内容"></el-input>
+        <el-form-item label="审核状态" prop="status">
+          <el-select style="width: 100%" v-model="form.status">
+            <el-option v-for="item in ['待审核', '通过', '拒绝']" :key="item" :value="item" :label="item"></el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="图片" prop="img">
-          <el-input v-model="form.img" placeholder="图片"></el-input>
-        </el-form-item>
-        <el-form-item label="用户ID" prop="userId">
-          <el-input v-model="form.userId" placeholder="用户ID"></el-input>
-        </el-form-item>
-        <el-form-item label="发布时间" prop="time">
-          <el-input v-model="form.time" placeholder="发布时间"></el-input>
-        </el-form-item>
-        <el-form-item label="圈子" prop="circle">
-          <el-input v-model="form.circle" placeholder="圈子"></el-input>
-        </el-form-item>
-        <el-form-item label="简介" prop="descr">
-          <el-input v-model="form.descr" placeholder="简介"></el-input>
-        </el-form-item>
-        <el-form-item label="浏览量" prop="readCount">
-          <el-input v-model="form.readCount" placeholder="浏览量"></el-input>
+        <el-form-item label="审核理由" prop="reason">
+          <el-input type="textarea" v-model="form.reason" placeholder="审核理由"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -130,20 +117,6 @@ export default {
   methods: {
     indexMethod(index) {
       return index + 1 + (this.pageNum -1) * this.pageSize;
-    },
-    changeStatus(row, status) {
-      this.$confirm('您确定'+status+'吗？', '确认操作', {type: "warning"}).then(response => {
-        this.form = JSON.parse(JSON.stringify(row))  // 给form对象赋值  注意要深拷贝数据
-        this.form.status = status
-        this.$request.put('/posts/update', this.form).then(res => {
-          if (res.code === '200') {  // 表示成功保存
-            this.$message.success('操作成功')
-            this.load(1)
-          } else {
-            this.$message.error(res.msg)  // 弹出错误的信息
-          }
-        })
-      }).catch(err => {})
     },
     preview(content) {
       this.content = content

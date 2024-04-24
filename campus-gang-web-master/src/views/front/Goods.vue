@@ -25,6 +25,9 @@
         </template>
       </el-table-column>
       <el-table-column prop="date" label="上架日期" show-overflow-tooltip align="center"></el-table-column>
+      <el-table-column prop="category" label="分类" align="center"></el-table-column>
+      <el-table-column prop="saleStatus" label="上架状态" align="center"></el-table-column>
+      <el-table-column prop="readCount" label="浏览量" align="center"></el-table-column>
       <el-table-column prop="status" label="审核状态" align="center">
         <template v-slot="scope">
           <el-tag type="info" v-if="scope.row.status === '待审核'">待审核</el-tag>
@@ -32,9 +35,7 @@
           <el-tag type="danger" v-if="scope.row.status === '拒绝'">拒绝</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="category" label="分类" align="center"></el-table-column>
-      <el-table-column prop="saleStatus" label="上架状态" align="center"></el-table-column>
-      <el-table-column prop="readCount" label="浏览量" align="center"></el-table-column>
+      <el-table-column prop="reason" label="审核理由" align="center"></el-table-column>
       <el-table-column label="操作" align="center" width="160">
         <template v-slot="scope">
           <el-button size="mini" type="primary" plain @click="handleEdit(scope.row)">编辑</el-button>

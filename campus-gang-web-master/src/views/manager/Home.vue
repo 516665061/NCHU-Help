@@ -227,8 +227,8 @@ const goodsType = {
     {
       name: 'Access From',
       type: 'pie',
-      center: ['55%','55%'],
-      radius: '50%',
+      center: ['50%','55%'],
+      radius: ['30%', '50%'],
       data: [],
       label: {
         show: true,
@@ -264,8 +264,8 @@ const errandTypes = {
     {
       name: 'Access From',
       type: 'pie',
-      center: ['50%','55%'],
-      radius: ['30%', '50%'],
+      center: ['55%','55%'],
+      radius: '50%',
       data: [],
       label: {
         show: true,

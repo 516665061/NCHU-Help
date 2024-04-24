@@ -37,6 +37,7 @@
           <el-tag type="danger" v-if="scope.row.status === '拒绝'">拒绝</el-tag>
         </template>
       </el-table-column>
+      <el-table-column prop="reason" label="审核理由" align="center"></el-table-column>
       <el-table-column label="操作" align="center" width="180">
         <template v-slot="scope">
           <el-button size="mini" type="primary" plain @click="handleEdit(scope.row)">编辑</el-button>

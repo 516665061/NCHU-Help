@@ -98,7 +98,7 @@
                 <el-button style="float: right; margin-bottom: 18px;" type="primary" plain size="mini" @click.stop="handleArrive(item)" v-if="item.status==='待送达' && current === '我接收的'" icon="el-icon-check">确认送达</el-button>
                 <el-button style="float: right; margin-bottom: 18px;" type="primary" plain size="mini" @click.stop="confirm(item,'待评价')" v-if="item.status==='待收货' && current === '我发布的'" icon="el-icon-check">确认收货</el-button>
                 <el-button style="float: right; margin-bottom: 18px;" type="primary" plain size="mini" @click.stop="comment(item)" v-if="item.status==='待评价' && current === '我发布的'" icon="el-icon-check">评  价</el-button>
-                <el-button style="float: right; margin-bottom: 18px; visibility: hidden;" type="primary" plain size="mini" @click.stop="comment(item)" v-if="(item.status==='已取消' || item.status==='已完成') && (current === '我发布的' || current === '我接收的')" icon="el-icon-check">评  价</el-button>
+                <el-button style="float: right; margin-bottom: 18px; visibility: hidden;" type="primary" plain size="mini" @click.stop="comment(item)" v-if="(item.status==='已取消' || item.status==='已完成' || item.status==='待送达') && (current === '我发布的' || current === '我接收的')" icon="el-icon-check">评  价</el-button>
               </div>
             </el-card>
           </div>
@@ -524,8 +524,7 @@ export default {
       if (pageNum) this.pageNum = pageNum
       let parameters = {
         pageNum: this.pageNum,
-        pageSize: this.pageSize,
-        property: "悬赏"
+        pageSize: this.pageSize
       }
       if (this.current === '抢单大厅'){
         parameters.status = '待接单'

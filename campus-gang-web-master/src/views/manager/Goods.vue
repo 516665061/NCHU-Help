@@ -15,7 +15,11 @@
         <el-table-column type="selection" width="55" align="center"></el-table-column>
         <el-table-column type="index" :index="indexMethod" label="序号" align="center"></el-table-column>
         <el-table-column prop="name" label="名称" show-overflow-tooltip align="center"></el-table-column>
-        <el-table-column prop="price" label="价格" align="center"></el-table-column>
+        <el-table-column prop="price" label="价格" align="center">
+          <template v-slot="scope">
+            <span style="color: red">￥{{ scope.row.price }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="content" label="详情" width="100" align="center">
           <template v-slot="scope">
             <el-button @click="preview(scope.row.content)">显示详情</el-button>
@@ -28,6 +32,11 @@
           </template>
         </el-table-column>
         <el-table-column prop="date" label="上架日期" align="center"></el-table-column>
+        <el-table-column prop="category" label="分类" align="center"></el-table-column>
+        <el-table-column prop="userId" show-overflow-tooltip label="用户ID" align="center"></el-table-column>
+        <el-table-column prop="userName" label="用户" align="center"></el-table-column>
+        <el-table-column prop="saleStatus" label="上架状态" align="center"></el-table-column>
+        <el-table-column prop="readCount" label="浏览量" align="center"></el-table-column>
         <el-table-column prop="status" label="审核状态" align="center">
           <template v-slot="scope">
             <el-tag type="success" v-if="scope.row.status === '待审核'">待审核</el-tag>
@@ -35,15 +44,10 @@
             <el-tag type="danger" v-if="scope.row.status === '拒绝'">拒绝</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="category" label="分类" align="center"></el-table-column>
-        <el-table-column prop="userId" show-overflow-tooltip label="用户ID" align="center"></el-table-column>
-        <el-table-column prop="userName" label="用户" align="center"></el-table-column>
-        <el-table-column prop="saleStatus" label="上架状态" align="center"></el-table-column>
-        <el-table-column prop="readCount" label="浏览量" align="center"></el-table-column>
+        <el-table-column prop="reason" label="审核理由" show-overflow-tooltip align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="240">
           <template v-slot="scope">
-            <el-button size="mini" type="primary" plain @click="changeStatus(scope.row, '通过')">通过</el-button>
-            <el-button size="mini" type="warning" plain @click="changeStatus(scope.row, '拒绝')">拒绝</el-button>
+            <el-button size="mini" type="primary" plain @click="handleEdit(scope.row)">审核</el-button>
             <el-button size="mini" type="danger" plain @click="del(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -66,40 +70,18 @@
       <div v-html="content"></div>
     </el-dialog>
 
-    <el-dialog title="二手商品" :visible.sync="fromVisible" width="40%" :close-on-click-modal="false" destroy-on-close>
+    <el-dialog title="信息" :visible.sync="fromVisible" width="40%" :close-on-click-modal="false" destroy-on-close>
       <el-form :model="form" label-width="100px" style="padding-right: 50px" :rules="rules" ref="formRef">
-        <el-form-item label="名称" prop="name" show-overflow-tooltip>
-          <el-input v-model="form.name" placeholder="名称"></el-input>
-        </el-form-item>
-        <el-form-item label="价格" prop="price">
-          <el-input v-model="form.price" placeholder="价格"></el-input>
-        </el-form-item>
-        <el-form-item label="详情" prop="content" show-overflow-tooltip>
-          <el-input v-model="form.content" placeholder="详情"></el-input>
-        </el-form-item>
-        <el-form-item label="发货地址" prop="address" show-overflow-tooltip>
-          <el-input v-model="form.address" placeholder="发货地址"></el-input>
-        </el-form-item>
-        <el-form-item label="图片" prop="img">
-          <el-input v-model="form.img" placeholder="图片"></el-input>
-        </el-form-item>
-        <el-form-item label="上架日期" prop="date" show-overflow-tooltip>
-          <el-input v-model="form.date" placeholder="上架日期"></el-input>
+        <el-form-item label="名称" prop="name">
+          <el-input v-model="form.name" placeholder="名称" disabled></el-input>
         </el-form-item>
         <el-form-item label="审核状态" prop="status">
-          <el-input v-model="form.status" placeholder="审核状态"></el-input>
+          <el-select style="width: 100%" v-model="form.status">
+            <el-option v-for="item in ['待审核', '通过', '拒绝']" :key="item" :value="item" :label="item"></el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="分类" prop="category">
-          <el-input v-model="form.category" placeholder="分类"></el-input>
-        </el-form-item>
-        <el-form-item label="所属用户ID" prop="userId">
-          <el-input v-model="form.userId" placeholder="所属用户ID"></el-input>
-        </el-form-item>
-        <el-form-item label="上架状态" prop="saleStatus">
-          <el-input v-model="form.saleStatus" placeholder="上架状态"></el-input>
-        </el-form-item>
-        <el-form-item label="浏览量" prop="readCount">
-          <el-input v-model="form.readCount" placeholder="浏览量"></el-input>
+        <el-form-item label="审核理由" prop="reason">
+          <el-input type="textarea" v-model="form.reason" placeholder="审核理由"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -141,20 +123,6 @@ export default {
     preview(content) {
       this.content = content
       this.fromVisible1 = true
-    },
-    changeStatus(row, status) {
-      this.$confirm('您确定操作吗？', '确认操作', {type: "warning"}).then(response => {
-        this.form = JSON.parse(JSON.stringify(row))  // 给form对象赋值  注意要深拷贝数据
-        this.form.status = status
-        this.$request.put('/goods/update', this.form).then(res => {
-          if (res.code === '200') {  // 表示成功保存
-            this.$message.success('保存成功')
-            this.load(1)
-          } else {
-            this.$message.error(res.msg)  // 弹出错误的信息
-          }
-        })
-      }).catch(err => {})
     },
     handleAdd() {   // 新增数据
       this.form = {}  // 新增数据的时候清空数据

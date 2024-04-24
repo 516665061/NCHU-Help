@@ -5,7 +5,7 @@
 <mapper namespace="com.example.mapper.OrdersMapper">
 
     <sql id="Base_Column_List">
-        id,order_no,name,descr,img,type,property,weight,price,type,user_id,accept_id,time,accept_time,expect_time,arrive_time,status,address_id,target_id,comment
+        id,order_no,name,descr,img,type,weight,price,type,user_id,accept_id,time,accept_time,expect_time,arrive_time,status,address_id,target_id
     </sql>
 
     <select id="selectAll" resultType="com.example.entity.Orders">
@@ -26,7 +26,6 @@
             <if test="status != null"> and orders.status = #{status}</if>
             <if test="userId != null"> and orders.user_id = #{userId}</if>
             <if test="acceptId != null"> and orders.accept_id = #{acceptId}</if>
-            <if test="property != null"> and orders.property = #{property}</if>
         </where>
         order by id desc
     </select>
@@ -63,7 +62,6 @@
             <if test="type != null">type,</if>
             <if test="weight != null">weight,</if>
             <if test="price != null">price,</if>
-            <if test="property != null">property,</if>
             <if test="userId != null">user_id,</if>
             <if test="acceptId != null">accept_id,</if>
             <if test="time != null">time,</if>
@@ -73,7 +71,6 @@
             <if test="status != null">status,</if>
             <if test="addressId != null">address_id,</if>
             <if test="targetId != null">target_id,</if>
-            <if test="comment != null">comment,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
@@ -84,7 +81,6 @@
             <if test="type != null">#{type},</if>
             <if test="weight != null">#{weight},</if>
             <if test="price != null">#{price},</if>
-            <if test="property != null">#{property},</if>
             <if test="userId != null">#{userId},</if>
             <if test="acceptId != null">#{acceptId},</if>
             <if test="time != null">#{time},</if>
@@ -94,7 +90,6 @@
             <if test="status != null">#{status},</if>
             <if test="addressId != null">#{addressId},</if>
             <if test="targetId != null">#{targetId},</if>
-            <if test="comment != null">#{comment},</if>
         </trim>
     </insert>
 
@@ -122,9 +117,6 @@
             <if test="price != null">
                 price = #{price},
             </if>
-            <if test="property != null">
-                type = #{property},
-            </if>
             <if test="userId != null">
                 user_id = #{userId},
             </if>
@@ -151,9 +143,6 @@
             </if>
             <if test="targetId != null">
                 target_id = #{targetId},
-            </if>
-            <if test="comment != null">
-                comment = #{comment},
             </if>
         </set>
         where id = #{id}

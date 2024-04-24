@@ -5,7 +5,7 @@
 <mapper namespace="com.example.mapper.GoodsMapper">
 
     <sql id="Base_Column_List">
-        id,name,price,content,address,img,date,status,category,user_id,sale_status,read_count
+        id,name,price,content,address,img,date,status,category,user_id,sale_status,read_count,reason
     </sql>
 
     <select id="selectAll" resultType="com.example.entity.Goods">
@@ -102,6 +102,9 @@
             </if>
             <if test="readCount != null">
                 read_count = #{readCount},
+            </if>
+            <if test="reason != null">
+                reason = #{reason},
             </if>
         </set>
         where id = #{id}

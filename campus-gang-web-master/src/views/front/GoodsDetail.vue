@@ -111,7 +111,7 @@ export default {
         return
       }
       this.form.goodsId = this.id
-      this.$request.post('orders/add', this.form).then(res => {
+      this.$request.post('goodsOrders/add', this.form).then(res => {
         if (res.code === '200') {
           this.$message.success('下单成功')
           this.$router.push('/person?tag=我的订单')

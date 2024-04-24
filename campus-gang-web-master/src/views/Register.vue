@@ -82,7 +82,7 @@ export default {
           {
             trigger: 'blur',
             validator:(rule, value, callback) => {
-              var regex = new RegExp("^[0-9a-zA-Z]+$");
+              const regex = new RegExp("^[0-9a-zA-Z]+$");
               if (value === "") {
                 callback(new Error("用户名"));
               } else if (value.length < 4 || value.length > 11) {

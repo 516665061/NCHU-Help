@@ -24,13 +24,14 @@ public class GoodsOrders implements Serializable {
     /** 订单编号 */
     private String orderNo;
     /** 总价 */
-    private BigDecimal total;
+    private BigDecimal price;
     /** 下单时间 */
     private String time;
     /** 支付单号 */
     private String payNo;
     /** 支付时间 */
     private String payTime;
+    private String arriveTime;
     /** 下单人ID */
     private Integer userId;
     /** 收货地址 */
@@ -42,10 +43,14 @@ public class GoodsOrders implements Serializable {
     /** 订单状态 */
     private String status;
     /** 卖家ID */
-    private Integer saleId;
+    private Integer acceptId;
     private Integer goodsId;
-    private Integer addressId;
-
+    private Integer targetId;
+    //收货地址 类型（Address）
+    private Address targetAddress;
+    private String salesName;
+    private String category;
+    private Integer minutes;
     public Integer getId() {
         return id;
     }
@@ -78,12 +83,21 @@ public class GoodsOrders implements Serializable {
         this.orderNo = orderNo;
     }
 
-    public BigDecimal getTotal() {
-        return total;
+    public Integer getMinutes() {
+        return minutes;
     }
 
-    public void setTotal(BigDecimal total) {
-        this.total = total;
+
+    public void setMinutes(Integer minutes) {
+        this.minutes = minutes;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public String getTime() {
@@ -104,6 +118,14 @@ public class GoodsOrders implements Serializable {
 
     public String getPayTime() {
         return payTime;
+    }
+
+    public Address getTargetAddress() {
+        return targetAddress;
+    }
+
+    public void setTargetAddress(Address targetAddress) {
+        this.targetAddress = targetAddress;
     }
 
     public void setPayTime(String payTime) {
@@ -130,6 +152,14 @@ public class GoodsOrders implements Serializable {
         return phone;
     }
 
+    public String getArriveTime() {
+        return arriveTime;
+    }
+
+    public void setArriveTime(String arriveTime) {
+        this.arriveTime = arriveTime;
+    }
+
     public void setPhone(String phone) {
         this.phone = phone;
     }
@@ -150,12 +180,12 @@ public class GoodsOrders implements Serializable {
         this.status = status;
     }
 
-    public Integer getSaleId() {
-        return saleId;
+    public Integer getAcceptId() {
+        return acceptId;
     }
 
-    public void setSaleId(Integer saleId) {
-        this.saleId = saleId;
+    public void setAcceptId(Integer acceptId) {
+        this.acceptId = acceptId;
     }
 
     public Integer getGoodsId() {
@@ -166,11 +196,28 @@ public class GoodsOrders implements Serializable {
         this.goodsId = goodsId;
     }
 
-    public Integer getAddressId() {
-        return addressId;
+    public Integer getTargetId() {
+        return targetId;
     }
 
-    public void setAddressId(Integer addressId) {
-        this.addressId = addressId;
+    public void setTargetId(Integer targetId) {
+        this.targetId = targetId;
     }
+
+    public String getSalesName() {
+        return salesName;
+    }
+
+    public void setSalesName(String salesName) {
+        this.salesName = salesName;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
 }

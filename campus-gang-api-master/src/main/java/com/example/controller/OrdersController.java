@@ -23,20 +23,11 @@ public class OrdersController {
 
 
     /**
-     * 小程序下单
+     * 下单
      */
     @PostMapping("/addOrder")
     public Result addOrder(@RequestBody Orders orders) {
         ordersService.addOrder(orders);
-        return Result.success();
-    }
-
-    /**
-     * 订单信息前端操作接口
-     */
-    @PostMapping("/add")
-    public Result add(@RequestBody Orders orders){
-        ordersService.add(orders);
         return Result.success();
     }
 
@@ -106,5 +97,6 @@ public class OrdersController {
         PageInfo<Orders> page = ordersService.selectPage(orders, pageNum, pageSize);
         return Result.success(page);
     }
+
 
 }
