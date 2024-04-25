@@ -7,7 +7,6 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.example.common.Result;
 import com.example.common.enums.OrderStatusEnum;
-import com.example.common.enums.OrdersPropertyEnum;
 import com.example.common.enums.ResultCodeEnum;
 import com.example.common.enums.RoleEnum;
 import com.example.entity.*;

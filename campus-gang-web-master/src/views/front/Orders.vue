@@ -58,17 +58,17 @@
                 <el-tag type="danger" style="float: right" v-if="item.status==='待评价'">{{ item.status }}</el-tag>
                 <el-tag type="info" style="float: right" v-if="item.status==='已取消'">{{ item.status }}</el-tag>
                 <el-tag type="success" style="float: right" v-if="item.status==='已完成'">{{ item.status }}</el-tag>
-                <div style="color: #AAAAAA; margin-top: 5px">
+                <div style="color: #AAAAAA; font-size: 14px; margin-top: 5px">
                   {{item.time}}
-                  <div style="float: right" v-if="item.status === '待接单' && item.userId === user.id">
-                    <el-statistic :value="new Date(item.expectTime)" time-indices format="HH:mm:ss" style="float: right" :value-style="{ color: 'red', fontSize: '16px' }" suffix="">
+                  <div style="float: right; margin-top: 2px;" v-if="item.status === '待接单' && item.userId === user.id">
+                    <el-statistic :value="new Date(item.expectTime)" time-indices format="HH:mm:ss" style="float: right;" :value-style="{ color: 'red', fontSize: '14px' }" suffix="">
                       <template slot="suffix" class="statistic-suffix">
                         后自动取消订单
                       </template>
                     </el-statistic>
                   </div>
-                  <div style="float: right" v-if="item.status === '待收货' && item.userId === user.id">
-                    <el-statistic :value="new Date(item.arriveTime).getTime()+1000*60*60*24*7" time-indices format="HH:mm:ss" style="float: right" :value-style="{ color: 'red', fontSize: '16px' }" suffix="">
+                  <div style="float: right; margin-top: 2px;" v-if="item.status === '待收货' && item.userId === user.id">
+                    <el-statistic :value="new Date(item.arriveTime).getTime()+1000*60*60*24*7" time-indices format="HH:mm:ss" style="float: right" :value-style="{ color: 'red', fontSize: '14px' }" suffix="">
                       <template slot="suffix" class="statistic-suffix">
                         后自动确认收货
                       </template>
@@ -98,7 +98,8 @@
                 <el-button style="float: right; margin-bottom: 18px;" type="primary" plain size="mini" @click.stop="handleArrive(item)" v-if="item.status==='待送达' && current === '我接收的'" icon="el-icon-check">确认送达</el-button>
                 <el-button style="float: right; margin-bottom: 18px;" type="primary" plain size="mini" @click.stop="confirm(item,'待评价')" v-if="item.status==='待收货' && current === '我发布的'" icon="el-icon-check">确认收货</el-button>
                 <el-button style="float: right; margin-bottom: 18px;" type="primary" plain size="mini" @click.stop="comment(item)" v-if="item.status==='待评价' && current === '我发布的'" icon="el-icon-check">评  价</el-button>
-                <el-button style="float: right; margin-bottom: 18px; visibility: hidden;" type="primary" plain size="mini" @click.stop="comment(item)" v-if="(item.status==='已取消' || item.status==='已完成' || item.status==='待送达') && (current === '我发布的' || current === '我接收的')" icon="el-icon-check">评  价</el-button>
+                <el-button style="float: right; margin-bottom: 18px; visibility: hidden;" type="primary" plain size="mini" @click.stop="comment(item)" v-if="(item.status==='已取消' || item.status==='已完成' || item.status==='待送达') &&(current === '我发布的')" icon="el-icon-check">评  价</el-button>
+                <el-button style="float: right; margin-bottom: 18px; visibility: hidden;" type="primary" plain size="mini" @click.stop="comment(item)" v-if="(item.status==='已取消' || item.status==='已完成' || item.status==='待评价' || item.status==='待收货') &&(current === '我接收的')" icon="el-icon-check">评  价</el-button>
               </div>
             </el-card>
           </div>

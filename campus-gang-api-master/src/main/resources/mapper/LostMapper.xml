@@ -36,8 +36,9 @@
 
     <select id="selectNewFour" resultType="com.example.entity.Lost">
         select
-        <include refid="Base_Column_List" />
+        lost.*, user.name as userName
         from lost
+        left join user on lost.user_id = user.id
         where status = #{status}
         order by id desc limit 4
     </select>
