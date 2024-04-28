@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="search">
-      <el-input placeholder="请输入关键字查询" style="width: 200px" v-model="content"></el-input>
+      <el-input placeholder="请输入评论内容查询" style="width: 200px" v-model="content"></el-input>
       <el-button type="primary" plain style="margin-left: 10px" @click="load(1)">查询</el-button>
       <el-button type="primary" plain style="margin-left: 10px" @click="reset">重置</el-button>
     </div>
@@ -15,13 +15,13 @@
       <el-table :data="tableData" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center"></el-table-column>
         <el-table-column type="index" :index="indexMethod" label="序号" align="center"></el-table-column>
-        <el-table-column prop="content" label="内容"></el-table-column>
-        <el-table-column prop="userId" label="评论人"></el-table-column>
-        <el-table-column prop="pid" label="父级ID"></el-table-column>
-        <el-table-column prop="time" label="评论时间"></el-table-column>
-        <el-table-column prop="fid" label="关联ID"></el-table-column>
-        <el-table-column prop="module" label="模块"></el-table-column>
-        <el-table-column prop="rootId" label="根节点ID"></el-table-column>
+        <el-table-column prop="content" label="内容" align="center"></el-table-column>
+        <el-table-column prop="userId" label="评论人" align="center"></el-table-column>
+        <el-table-column prop="pid" label="父级ID" align="center"></el-table-column>
+        <el-table-column prop="time" label="评论时间" align="center"></el-table-column>
+        <el-table-column prop="fid" label="关联ID" align="center"></el-table-column>
+        <el-table-column prop="module" label="模块" align="center"></el-table-column>
+        <el-table-column prop="rootId" label="根节点ID" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template v-slot="scope">
             <el-button size="mini" type="primary" plain @click="handleEdit(scope.row)">编辑</el-button>

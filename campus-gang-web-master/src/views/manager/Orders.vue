@@ -27,7 +27,7 @@
             <el-image v-if="scope.row.goodsImg" style="width: 50px" :src="scope.row.goodsImg" :preview-src-list="[scope.row.goodsImg]"></el-image>
           </template>
         </el-table-column>
-        <el-table-column prop="orderNo" label="订单编号" width="120" align="center"></el-table-column>
+        <el-table-column prop="orderNo" label="订单编号" show-overflow-tooltip width="120" align="center"></el-table-column>
         <el-table-column prop="price" label="总价" align="center">
           <template v-slot="scope">
             <span style="color: red">￥{{ scope.row.price }}</span>

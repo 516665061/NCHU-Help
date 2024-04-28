@@ -6,6 +6,7 @@ import cn.hutool.core.date.DateUtil;
 import com.example.common.enums.OrderStatusEnum;
 import com.example.common.enums.OrdersPropertyEnum;
 import com.example.entity.GoodsOrders;
+import com.example.entity.Lost;
 import com.example.entity.Orders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +27,7 @@ public class OrdersSchedule {
     GoodsOrdersService goodsOrdersService;
 
     @Resource
-    UserService userService;
-
+    LostService lostService;
     @Scheduled(fixedRate = 60000)
     public void task() {
         log.info("========================订单扫描任务开始========================");
@@ -78,6 +78,17 @@ public class OrdersSchedule {
             if (seconds > 86400){  //超过了24小时  自动取消订单
                 goodsOrders.setStatus(OrderStatusEnum.CANCEL.getValue());
                 goodsOrdersService.updateById(goodsOrders);
+            }
+        }
+
+        Lost lost = new Lost();
+        List<Lost> lostList = lostService.selectAll(lost);
+        for (Lost lost1:lostList){
+            String time = lost1.getTime();
+            DateTime dateTime = DateUtil.parseDateTime(time);
+            long days = DateUtil.between(dateTime, new Date(), DateUnit.DAY);
+            if (days >= 365){
+                lostService.deleteById(lost1.getId());
             }
         }
         log.info("========================订单扫描任务结束========================");

@@ -58,8 +58,12 @@
                         <img :src="item.img" alt="" style="height: 75px; width: 75px; border: 2px solid #eeeeee">
                         <div style="flex: 1 1 0; margin-left: 5px; width: 0;">
                           <div class="overflowShow" style="font-weight: 550; color: #409EFF">{{ item.name }}</div>
-                          <div class="overflowShow" style="margin-top: 10px; color: #666666">发布人：{{ item.userName }}</div>
-                          <div class="overflowShow" style="margin-top: 5px; color: #666666">时间：{{ item.time }}</div>
+                          <el-tooltip class="item" effect="dark" :content=item.userName placement="top">
+                            <div class="overflowShow" style="margin-top: 10px; color: #666666">发布人：{{ item.userName }}</div>
+                          </el-tooltip>
+                          <el-tooltip class="item" effect="dark" :content=item.time placement="top">
+                            <div class="overflowShow" style="margin-top: 5px; color: #666666">时间：{{ item.time }}</div>
+                          </el-tooltip>
                         </div>
                       </div>
                       <div style="margin-top: 20px; text-align: center">
@@ -86,8 +90,12 @@
                         <img :src="item.img" alt="" style="height: 75px; width: 75px; border: 2px solid #eeeeee">
                         <div style="flex: 1 1 0; margin-left: 5px; width: 0;">
                           <div class="overflowShow" style="font-weight: 550; color: #409EFF">{{ item.name }}</div>
-                          <div class="overflowShow" style="margin-top: 10px; color: #666666">发布人：{{ item.userName }}</div>
-                          <div class="overflowShow" style="margin-top: 5px; color: #666666">时间：{{ item.time }}</div>
+                          <el-tooltip class="item" effect="dark" :content=item.userName placement="top">
+                            <div class="overflowShow" style="margin-top: 10px; color: #666666">发布人：{{ item.userName }}</div>
+                          </el-tooltip>
+                          <el-tooltip class="item" effect="dark" :content=item.time placement="top">
+                            <div class="overflowShow" style="margin-top: 5px; color: #666666">时间：{{ item.time }}</div>
+                          </el-tooltip>
                         </div>
                       </div>
                       <div style="margin-top: 20px; text-align: center">

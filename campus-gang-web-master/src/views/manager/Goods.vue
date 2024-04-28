@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="search">
-      <el-input placeholder="请输入关键字查询" style="width: 200px" v-model="name"></el-input>
+      <el-input placeholder="请输入商品名称查询" style="width: 200px" v-model="name"></el-input>
       <el-button type="primary" plain style="margin-left: 10px" @click="load(1)">查询</el-button>
       <el-button type="primary" plain style="margin-left: 10px" @click="reset">重置</el-button>
     </div>

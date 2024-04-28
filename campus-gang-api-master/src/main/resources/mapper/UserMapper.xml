@@ -78,7 +78,7 @@
         select * from user
         <where>
             <if test="id != null"> and id= #{id}</if>
-            <if test="username != null"> and username like concat('%', #{username}, '%')</if>
+            <if test="username != null"> and username = #{username}</if>
             <if test="name != null"> and name like concat('%', #{name}, '%') </if>
             <if test="sex != null"> and sex= #{sex}</if>
             <if test="time != null"> and time= #{time}</if>

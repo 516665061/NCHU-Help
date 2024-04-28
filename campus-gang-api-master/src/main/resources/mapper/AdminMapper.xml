@@ -14,7 +14,7 @@
         from admin
         <where>
             <if test="id != null"> and id= #{id}</if>
-            <if test="username != null"> and username like concat('%', #{username}, '%')</if>
+            <if test="username != null"> and username = #{username}</if>
             <if test="password != null"> and password= #{password}</if>
             <if test="name != null"> and name= #{name}</if>
             <if test="phone != null"> and phone= #{phone}</if>

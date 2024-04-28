@@ -5,7 +5,7 @@
     <div class="main-content">
       <div style="text-align: right">
         <el-input placeholder="请输入内容" size="medium" v-model="inputMsg" clearable style="width: 500px; margin-right: 10px; "></el-input>
-        <el-button size="medium">搜索</el-button>
+        <el-button size="medium" @click="(activeName === 'first' || activeName === 'second') ? load(1):loadList(1)">搜索</el-button>
       </div>
 
       <div style="margin-top: 20px;">
@@ -19,8 +19,12 @@
                       <img :src="item.img" alt="" style="height: 75px; width: 75px; border: 2px solid #eeeeee">
                       <div style="flex: 1 1 0; margin-left: 5px; width: 0;">
                         <div class="overflowShow" style="font-weight: 550; color: #409EFF">{{ item.name }}</div>
-                        <div class="overflowShow" style="margin-top: 10px; color: #666666">发布人：{{ item.userName }}</div>
-                        <div class="overflowShow" style="margin-top: 5px; color: #666666">时间：{{ item.time }}</div>
+                        <el-tooltip class="item" effect="dark" :content=item.userName placement="top">
+                          <div class="overflowShow" style="margin-top: 10px; color: #666666">发布人：{{ item.userName }}</div>
+                        </el-tooltip>
+                        <el-tooltip class="item" effect="dark" :content=item.time placement="top">
+                          <div class="overflowShow" style="margin-top: 5px; color: #666666">时间：{{ item.time }}</div>
+                        </el-tooltip>
                       </div>
                     </div>
                     <div style="margin-top: 20px; text-align: center">
@@ -53,8 +57,12 @@
                       <img :src="item.img" alt="" style="height: 75px; width: 75px; border: 2px solid #eeeeee">
                       <div style="flex: 1 1 0; margin-left: 5px; width: 0;">
                         <div class="overflowShow" style="font-weight: 550; color: #409EFF">{{ item.name }}</div>
-                        <div class="overflowShow" style="margin-top: 10px; color: #666666">发布人：{{ item.userName }}</div>
-                        <div class="overflowShow" style="margin-top: 5px; color: #666666">时间：{{ item.time }}</div>
+                        <el-tooltip class="item" effect="dark" :content=item.userName placement="top">
+                          <div class="overflowShow" style="margin-top: 10px; color: #666666">发布人：{{ item.userName }}</div>
+                        </el-tooltip>
+                        <el-tooltip class="item" effect="dark" :content=item.time placement="top">
+                          <div class="overflowShow" style="margin-top: 5px; color: #666666">时间：{{ item.time }}</div>
+                        </el-tooltip>
                       </div>
                     </div>
                     <div style="margin-top: 20px; text-align: center">
@@ -281,7 +289,7 @@ export default {
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
-          name: this.name,
+          name: this.inputMsg,
           status: this.activeName === 'first' ? '丢失中' : '未找到失主'
         }
       }).then(res => {
@@ -295,7 +303,7 @@ export default {
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
-          name: this.name,
+          name: this.inputMsg,
           status: this.activeName === 'third' ? '丢失中' : '未找到失主',
           viceStatus: this.activeName === 'third' ? '已找到' : '已找到失主',
           userId: this.user.id
@@ -355,6 +363,7 @@ export default {
     },
     handleClick(tab, event) {
       console.log(tab, event);
+      this.inputMsg = ''
       if (this.activeName === 'first' || this.activeName === 'second'){
         this.pageSize = 12
         this.load(1);

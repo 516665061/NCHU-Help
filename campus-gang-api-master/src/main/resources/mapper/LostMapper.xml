@@ -14,10 +14,9 @@
         from lost
         left join user on lost.user_id = user.id
         <where>
-            <if test="id != null"> and id= #{id}</if>
-            <if test="name != null"> and name like concat('%', #{name}, '%')</if>
+            <if test="id != null"> and lost.id= #{id}</if>
+            <if test="name != null"> and lost.name like concat('%', #{name}, '%')</if>
             <if test="userId != null"> and user_id= #{userId}</if>
-            <trim prefix="(" suffix=")" suffixOverrides=","></trim>
             <if test="status != null or viceStatus != null"> and status in
                  <trim prefix="(" suffix=")" suffixOverrides=",">
                      #{status},#{viceStatus}
