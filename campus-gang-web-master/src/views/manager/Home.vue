@@ -73,7 +73,7 @@
       <el-row :gutter="10">
         <el-col :span="24">
           <el-card>
-            <div style="text-align: center">
+            <div style="text-align: center; padding: 10px">
               <el-date-picker
                   v-model="date"
                   type="daterange"
@@ -88,7 +88,14 @@
               </el-date-picker>
               <el-button type="primary" plain @click="search" style="margin-left: 10px">查  询</el-button>
             </div>
-            <div style="width: 100%; height: 350px; margin-top: 10px" id="line"></div>
+            <el-row :gutter="10">
+              <el-col :span="12">
+                <div style="height: 350px; margin-top: 10px" id="line"></div>
+              </el-col>
+              <el-col :span="12">
+                <div style="height: 350px; margin-top: 10px" id="bar"></div>
+              </el-col>
+            </el-row>
           </el-card>
         </el-col>
       </el-row>
@@ -118,6 +125,62 @@ import * as echarts from 'echarts';
 const sales = {
   title: {
     text: '销量趋势',
+    left: 'center'
+  },
+  tooltip: {
+    trigger: 'axis',
+  },
+  legend: {
+    center: 'center',
+    top: '6%'
+  },
+  xAxis: {
+    type: 'category',
+    data: []
+  },
+  yAxis: {
+    type: 'value'
+  },
+  series: [
+    {
+      name: '总销量',
+      data: [],
+      type: 'bar',
+      itemStyle: {
+        barBorderRadius: [2, 2, 0, 0], //柱体圆角
+        color: new echarts.graphic.LinearGradient(
+            //前四个参数用于配置渐变色的起止位置，这四个参数依次对应 右下左上 四个方位。也就是从右边开始顺时针方向。
+            //通过修改前4个参数，可以实现不同的渐变方向
+            /*第五个参数则是一个数组，用于配置颜色的渐变过程。
+              每项为一个对象，包含offset和color两个参数
+            */
+            0, 1, 0, 0, [{//代表渐变色从正上方开始
+              offset: 0, //offset范围是0~1，用于表示位置，0是指0%处的颜色
+              color: '#409EFF'
+            }, //柱图渐变色
+              {
+                offset: 1, //指100%处的颜色
+                color: '#b3d8ff'
+              }
+            ]
+        ),
+      }
+    },
+    {
+      name: '商品销量',
+      data: [],
+      type: 'bar',
+    },
+    {
+      name: '跑腿销量',
+      data: [],
+      type: 'bar',
+    },
+  ]
+}
+const water = {
+  title: {
+    text: '销售额',
     left: 'center'
   },
   tooltip: {
@@ -173,43 +236,8 @@ const sales = {
       type: 'line',
       smooth: true,
     },
-    {
-      name: '总销量',
-      data: [],
-      type: 'bar',
-      itemStyle: {
-        barBorderRadius: [2, 2, 0, 0], //柱体圆角
-        color: new echarts.graphic.LinearGradient(
-            //前四个参数用于配置渐变色的起止位置，这四个参数依次对应 右下左上 四个方位。也就是从右边开始顺时针方向。
-            //通过修改前4个参数，可以实现不同的渐变方向
-            /*第五个参数则是一个数组，用于配置颜色的渐变过程。
-              每项为一个对象，包含offset和color两个参数
-            */
-            0, 1, 0, 0, [{//代表渐变色从正上方开始
-              offset: 0, //offset范围是0~1，用于表示位置，0是指0%处的颜色
-              color: '#409EFF'
-            }, //柱图渐变色
-              {
-                offset: 1, //指100%处的颜色
-                color: '#b3d8ff'
-              }
-            ]
-        ),
-      }
-    },
-    {
-      name: '商品销量',
-      data: [],
-      type: 'bar',
-    },
-    {
-      name: '跑腿销量',
-      data: [],
-      type: 'bar',
-    },
   ]
 }
-
 const goodsType = {
   title: {
     text: '商品分类销量',
@@ -246,7 +274,6 @@ const goodsType = {
     }
   ]
 };
-
 const errandTypes = {
   title: {
     text: '跑腿分类销量',
@@ -367,6 +394,9 @@ export default {
       let lineDom = document.getElementById('line');
       let lineChart = echarts.init(lineDom);
 
+      let barDom = document.getElementById('bar');
+      let barChart = echarts.init(barDom);
+
       let hoopDom = document.getElementById('hoop');
       let hoopChart = echarts.init(hoopDom);
 
@@ -382,13 +412,15 @@ export default {
         if (res.code === '200'){
           // 折线
           sales.xAxis.data = res.data.line?.map(v => v.time) || []
+          water.xAxis.data = res.data.line?.map(v => v.time) || []
           sales.series[0].data = res.data.line?.map(v => v.allSum) || []
           sales.series[1].data = res.data.line?.map(v => v.goodsSum) || []
           sales.series[2].data = res.data.line?.map(v => v.taskSum) || []
-          sales.series[3].data = res.data.line?.map(v => v.allAmount) || []
-          sales.series[4].data = res.data.line?.map(v => v.goodsAmount) || []
-          sales.series[5].data = res.data.line?.map(v => v.errandAmount) || []
+          water.series[0].data = res.data.line?.map(v => v.allAmount) || []
+          water.series[1].data = res.data.line?.map(v => v.goodsAmount) || []
+          water.series[2].data = res.data.line?.map(v => v.errandAmount) || []
           lineChart.setOption(sales)
+          barChart.setOption(water)
 
           //环图
           goodsType.series[0].data = res.data?.hoop || []
