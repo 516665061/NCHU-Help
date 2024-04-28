@@ -411,14 +411,14 @@ export default {
       }).then(res => {
         if (res.code === '200'){
           // 折线
-          sales.xAxis.data = res.data.line?.map(v => v.time) || []
           water.xAxis.data = res.data.line?.map(v => v.time) || []
-          sales.series[0].data = res.data.line?.map(v => v.allSum) || []
-          sales.series[1].data = res.data.line?.map(v => v.goodsSum) || []
-          sales.series[2].data = res.data.line?.map(v => v.taskSum) || []
-          water.series[0].data = res.data.line?.map(v => v.allAmount) || []
-          water.series[1].data = res.data.line?.map(v => v.goodsAmount) || []
-          water.series[2].data = res.data.line?.map(v => v.errandAmount) || []
+          sales.xAxis.data = res.data.line?.map(v => v.time) || []
+          water.series[0].data = res.data.line?.map(v => v.allSum) || []
+          water.series[1].data = res.data.line?.map(v => v.goodsSum) || []
+          water.series[2].data = res.data.line?.map(v => v.taskSum) || []
+          sales.series[0].data = res.data.line?.map(v => v.allAmount) || []
+          sales.series[1].data = res.data.line?.map(v => v.goodsAmount) || []
+          sales.series[2].data = res.data.line?.map(v => v.errandAmount) || []
           lineChart.setOption(sales)
           barChart.setOption(water)
 
