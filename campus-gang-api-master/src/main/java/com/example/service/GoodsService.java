@@ -70,7 +70,7 @@ public class GoodsService {
      */
     public void updateById(Goods goods) {
         Account currentUser = TokenUtils.getCurrentUser();
-        if (RoleEnum.USER.name().equals(currentUser.getRole())) {
+        if (RoleEnum.USER.name().equals(currentUser.getRole()) && "上架".equals(goods.getSaleStatus())) {
             goods.setStatus(GoodsStatusEnum.NOT_AUDIT.value);
         }
         goodsMapper.updateById(goods);
