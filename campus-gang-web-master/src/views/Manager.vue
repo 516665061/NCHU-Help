@@ -4,9 +4,8 @@
     <div class="manager-header">
       <div class="manager-header-left">
         <img src="@/assets/imgs/logo.png" />
-        <div class="title">NCHU校园帮</div>
+        <div class="title">校园帮</div>
       </div>
-
       <div class="manager-header-center">
         <el-breadcrumb separator-class="el-icon-arrow-right">
           <el-breadcrumb-item :to="{ path: '/admin/home' }">首页</el-breadcrumb-item>

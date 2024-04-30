@@ -99,10 +99,8 @@
                   <el-table-column type="index" :index="indexMethod" label="序号" align="center"></el-table-column>
                   <el-table-column prop="img" label="物品主图" align="center">
                     <template v-slot="scope">
-                      <div style="display: flex; align-items: center">
-                        <el-image style="width: 40px; height: 40px; border-radius: 50%" v-if="scope.row.img"
-                                  :src="scope.row.img" :preview-src-list="[scope.row.img]"></el-image>
-                      </div>
+                      <el-image style="width: 40px; height: 40px; border-radius: 50%" v-if="scope.row.img"
+                                :src="scope.row.img" :preview-src-list="[scope.row.img]"></el-image>
                     </template>
                   </el-table-column>
                   <el-table-column prop="name" label="物品名称" show-overflow-tooltip align="center"></el-table-column>
@@ -149,10 +147,8 @@
                   <el-table-column type="index" :index="indexMethod" label="序号" align="center"></el-table-column>
                   <el-table-column prop="img" label="物品主图" align="center">
                     <template v-slot="scope">
-                      <div style="display: flex; align-items: center">
-                        <el-image style="width: 40px; height: 40px; border-radius: 50%" v-if="scope.row.img"
-                                  :src="scope.row.img" :preview-src-list="[scope.row.img]"></el-image>
-                      </div>
+                      <el-image style="width: 40px; height: 40px; border-radius: 50%" v-if="scope.row.img"
+                                :src="scope.row.img" :preview-src-list="[scope.row.img]"></el-image>
                     </template>
                   </el-table-column>
                   <el-table-column prop="name" label="物品名称" show-overflow-tooltip align="center"></el-table-column>
@@ -349,7 +345,7 @@ export default {
         this.editor = new Edit('#editor')
         this.editor.config.placeholder = '请输入内容'
         this.editor.config.uploadFileName = 'file'
-        this.editor.config.uploadImgServer = 'http://localhost:9090/files/editor/upload'
+        this.editor.config.uploadImgServer = this.$baseUrl + '/files/editor/upload'
         this.editor.create()
         setTimeout(() => {
           this.editor.txt.html(content)

@@ -28,7 +28,7 @@
         <el-table-column prop="userName" label="用户名称" align="center"></el-table-column>
         <el-table-column prop="time" label="发布时间" align="center"></el-table-column>
         <el-table-column prop="circle" label="圈子" align="center"></el-table-column>
-        <el-table-column prop="descr" label="简介" align="center"></el-table-column>
+        <el-table-column prop="descr" label="简介" show-overflow-tooltip align="center"></el-table-column>
         <el-table-column prop="readCount" label="浏览量"></el-table-column>
         <el-table-column prop="status" label="审核状态">
           <template v-slot="scope">

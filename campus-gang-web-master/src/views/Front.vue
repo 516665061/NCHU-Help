@@ -5,7 +5,7 @@
     <div class="front-header">
       <div class="front-header-left">
         <img src="@/assets/imgs/logo.png" alt="">
-        <div class="title">NCHU校园帮</div>
+        <div class="title">校园帮</div>
       </div>
       <div class="front-header-center">
         <div class="front-header-nav">

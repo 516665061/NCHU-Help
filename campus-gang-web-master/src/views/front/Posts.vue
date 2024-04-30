@@ -30,9 +30,18 @@
 
           </div>
         </div>
-
       </div>
-
+      <div style="margin-top: 10px; text-align: center">
+        <el-pagination
+            :hide-on-single-page="true"
+            background
+            @current-change="handleCurrentChange"
+            :current-page="pageNum"
+            :page-size="pageSize"
+            layout="total, prev, pager, next, jumper"
+            :total="total">
+        </el-pagination>
+      </div>
     </div>
 
     <el-dialog title="帖子" :visible.sync="fromVisible" width="50%" :close-on-click-modal="false" destroy-on-close>
@@ -86,7 +95,7 @@ export default {
       tableData: [],
       total: 0,
       pageNum: 1,
-      pageSize: 4,
+      pageSize: 5,
       fromVisible: false,
       form: {},
       rules: {},
