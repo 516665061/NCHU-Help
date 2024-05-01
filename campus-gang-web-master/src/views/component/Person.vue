@@ -27,6 +27,10 @@
       <el-form-item label="姓名" prop="name">
         <el-input v-model="user.name" placeholder="姓名"></el-input>
       </el-form-item>
+      <el-form-item label="姓名" prop="sex">
+        <el-radio v-model="user.sex" label="男">男</el-radio>
+        <el-radio v-model="user.sex" label="女">女</el-radio>
+      </el-form-item>
       <el-form-item label="电话" prop="phone">
         <el-input v-model="user.phone" placeholder="电话"></el-input>
       </el-form-item>

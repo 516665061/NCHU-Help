@@ -78,7 +78,7 @@
               </div>
               <div class="text item line" v-if="item.descr != null">
                 <div class="line-title">帮助内容:</div>
-                <div class="line-content">{{item.descr}}</div>
+                <div class="line-content">{{item.name}}，{{item.descr}}</div>
               </div>
               <div class="text item line">
                 <div class="line-title">取货地址:</div>

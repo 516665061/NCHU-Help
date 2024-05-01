@@ -36,9 +36,6 @@
             </div>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
-                <div style="text-decoration: none" @click="$router.push('/person')">个人中心</div>
-              </el-dropdown-item>
-              <el-dropdown-item>
                 <div style="text-decoration: none" @click="openWallet">钱包</div>
               </el-dropdown-item>
               <el-dropdown-item>
@@ -49,6 +46,9 @@
               </el-dropdown-item>
               <el-dropdown-item>
                 <div style="text-decoration: none" @click="$router.push('/certification')">骑手认证</div>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <div style="text-decoration: none" @click="$router.push('/person')">个人中心</div>
               </el-dropdown-item>
               <el-dropdown-item>
                 <div style="text-decoration: none" @click="logout">退出登录</div>
