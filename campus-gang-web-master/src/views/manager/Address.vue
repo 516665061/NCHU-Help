@@ -19,7 +19,6 @@
         <el-table-column prop="userName" label="联系人" align="center"></el-table-column>
         <el-table-column prop="phone" label="联系电话" align="center"></el-table-column>
         <el-table-column prop="userId" label="关联用户ID" align="center"></el-table-column>
-        <el-table-column prop="user" label="关联用户" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template v-slot="scope">
             <el-button size="mini" type="primary" plain @click="handleEdit(scope.row)">编辑</el-button>
@@ -53,7 +52,7 @@
         <el-form-item label="联系电话" prop="phone">
           <el-input v-model="form.phone" placeholder="联系电话"></el-input>
         </el-form-item>
-        <el-form-item label="关联用户" prop="userId">
+        <el-form-item label="关联用户ID" prop="userId">
           <el-select style="width: 100%" v-model="form.userId">
             <el-option v-for="item in userList" :key="item.id" :label="item.name" :value="item.id"></el-option>
           </el-select>

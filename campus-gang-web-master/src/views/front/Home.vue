@@ -17,7 +17,7 @@
                 <div style="flex: 1; text-align: right; color: #666666; cursor: pointer" @click="$router.push('/posts')">查看更多</div>
               </div>
               <div style="margin-top: 10px">
-                <div v-for="item in newPostData" style="margin-bottom: 10px; display: flex; cursor: pointer;">
+                <div @click="$router.push('/postsDetail?id=' + item.id)"  v-for="item in newPostData" style="margin-bottom: 10px; display: flex; cursor: pointer;">
                   <div class="line1 postTitle" style="flex: 1 1 0%;">{{ item.title}}</div>
                   <div class="line1" style="margin-left: 10px; color: rgb(102, 102, 102); font-size: 13px">{{ item.time}}</div>
                 </div>
@@ -32,7 +32,7 @@
                 <div style="flex: 1; text-align: right; color: #666666; cursor: pointer" @click="$router.push('/posts')">查看更多</div>
               </div>
               <div style="margin-top: 10px">
-                <div v-for="item in postData" style="margin-bottom: 10px; display: flex; cursor: pointer;">
+                <div @click="$router.push('/postsDetail?id=' + item.id)" v-for="item in postData" style="margin-bottom: 10px; display: flex; cursor: pointer;">
                   <div class="line1 postTitle" style="flex: 1 1 0%;">{{ item.title}}</div>
                   <div class="line1" style="margin-left: 10px; color: rgb(102, 102, 102); font-size: 13px">{{ item.time}}</div>
               </div>

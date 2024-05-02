@@ -124,7 +124,7 @@ import * as echarts from 'echarts';
 
 const sales = {
   title: {
-    text: '销量趋势',
+    text: '日销量图',
     left: 'center'
   },
   tooltip: {
@@ -180,7 +180,7 @@ const sales = {
 }
 const water = {
   title: {
-    text: '销售额',
+    text: '日销售额图',
     left: 'center'
   },
   tooltip: {
@@ -240,7 +240,7 @@ const water = {
 }
 const goodsType = {
   title: {
-    text: '商品分类销量',
+    text: '商品分类销量比',
     subtext: '比例图',
     left: 'center'
   },
@@ -276,7 +276,7 @@ const goodsType = {
 };
 const errandTypes = {
   title: {
-    text: '跑腿分类销量',
+    text: '跑腿分类销量比',
     subtext: '比例图',
     left: 'center'
   },
