@@ -51,7 +51,7 @@
             <el-tag type="default" v-if="!form.status" >待申请</el-tag>
             <el-tag type="warning" v-if="form.status === '待审核'">待审核</el-tag>
             <el-tag type="success" v-if="form.status === '通过'">通过</el-tag>
-            <el-tag type="error" v-if="form.status === '拒绝'">拒绝</el-tag>
+            <el-tag type="danger" v-if="form.status === '拒绝'">拒绝</el-tag>
           </template>
         </el-form-item>
         <el-form-item label="审核理由" prop="reason" v-if="form.reason">
