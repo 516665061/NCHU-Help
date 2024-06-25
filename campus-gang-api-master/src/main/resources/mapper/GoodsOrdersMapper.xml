@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.GoodsOrdersMapper">
+
+    <sql id="Base_Column_List">
+        id,goods_name,goods_img,order_no,category,price,time,pay_time,arrive_time,user_id,goods_id,status,accept_id,target_id
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.GoodsOrders">
+        select
+        <include refid="Base_Column_List" />
+        from goods_orders
+        <where>
+            <if test="id != null"> and id = #{id}</if>
+            <if test="goodsName != null"> and goods_name like concat('%', #{goodsName}, '%')</if>
+            <if test="goodsImg != null"> and goods_img like concat('%', #{goodsImg}, '%')</if>
+            <if test="orderNo != null"> and order_no like concat('%', #{orderNo}, '%')</if>
+            <if test="price != null"> and price = #{price}</if>
+            <if test="time != null"> and time like concat('%', #{time}, '%')</if>
+            <if test="payTime != null"> and pay_time like concat('%', #{payTime}, '%')</if>
+            <if test="userId != null"> and user_id = #{userId}</if>
+            <if test="category != null"> and category = #{category}</if>
+            <if test="targetId != null"> and target_id = #{targetId}</if>
+            <if test="goodsId != null"> and goods_id like concat('%', #{goodsId}, '%')</if>
+            <if test="status != null"> and status like concat('%', #{status}, '%')</if>
+            <if test="acceptId != null"> and accept_id = #{acceptId}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.GoodsOrders">
+        select
+        <include refid="Base_Column_List" />
+        from goods_orders
+        where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from goods_orders
+        where  id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.GoodsOrders" useGeneratedKeys="true" keyProperty="id">
+        insert into goods_orders
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="goodsName != null">goods_name,</if>
+            <if test="goodsImg != null">goods_img,</if>
+            <if test="orderNo != null">order_no,</if>
+            <if test="price != null">price,</if>
+            <if test="time != null">time,</if>
+            <if test="category != null">category,</if>
+            <if test="payTime != null">pay_time,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="targetId != null">target_id,</if>
+            <if test="goodsId != null">goods_id,</if>
+            <if test="status != null">status,</if>
+            <if test="acceptId != null">accept_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="goodsName != null">#{goodsName},</if>
+            <if test="goodsImg != null">#{goodsImg},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="price != null">#{price},</if>
+            <if test="time != null">#{time},</if>
+            <if test="category != null">#{category},</if>
+            <if test="payNo != null">#{payNo},</if>
+            <if test="payTime != null">#{payTime},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="targetId != null">#{targetId},</if>
+            <if test="goodsId != null">#{goodsId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="acceptId != null">#{acceptId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.GoodsOrders">
+        update goods_orders
+        <set>
+            <if test="goodsName != null">
+                goods_name = #{goodsName},
+            </if>
+            <if test="goodsImg != null">
+                goods_img = #{goodsImg},
+            </if>
+            <if test="orderNo != null">
+                order_no = #{orderNo},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+            <if test="payTime != null">
+                pay_time = #{payTime},
+            </if>
+            <if test="category != null">
+                category = #{category},
+            </if>
+            <if test="arriveTime != null">
+                arrive_time = #{arriveTime},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="targetId != null">
+                target_id = #{targetId},
+            </if>
+            <if test="goodsId != null">
+                goods_id = #{goodsId},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="acceptId != null">
+                accept_id = #{acceptId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="list" resultType="com.example.entity.GoodsOrders">
+        select
+        <include refid="Base_Column_List"></include>
+        from goods_orders
+        <where>
+            <if test="startTime != null and endTime != null">SUBSTR(time,1,10) between #{startTime} and #{endTime}</if>
+        </where>
+    </select>
+</mapper>
