@@ -11,7 +11,7 @@ Vue.config.productionTip = false
 
 Vue.prototype.$request = request
 Vue.prototype.$baseUrl = process.env.VUE_APP_BASEURL  //在.env.development中设置后台端口号及地址
-
+Vue.prototype.$webSocketUrl = process.env.VUE_APP_SOCKET
 Vue.use(ElementUI, {size: "small"})
 
 new Vue({

@@ -24,10 +24,11 @@
         <el-table-column prop="username" label="账号" align="center"></el-table-column>
         <el-table-column prop="name" label="姓名" align="center"></el-table-column>
         <el-table-column prop="phone" label="电话" align="center"></el-table-column>
-        <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
+        <el-table-column prop="email" label="邮箱" show-overflow-tooltip align="center"></el-table-column>
         <el-table-column prop="role" label="角色" align="center"></el-table-column>
         <el-table-column prop="sex" label="性别" align="center"></el-table-column>
         <el-table-column prop="account" label="账户余额" align="center"></el-table-column>
+        <el-table-column prop="time" label="注册时间" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template v-slot="scope">
             <el-button size="mini" type="primary" plain @click="handleEdit(scope.row)">编辑</el-button>

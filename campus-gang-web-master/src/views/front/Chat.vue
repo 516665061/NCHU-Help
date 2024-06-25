@@ -134,7 +134,7 @@ export default {
         console.log("您的浏览器不支持WebSocket")
       } else {
         console.log("您的浏览器支持WebSocket")
-        let socketUrl = "ws://localhost:9090/chatServer/" + this.user.id
+        let socketUrl = this.$webSocketUrl + "/chatServer/" + this.user.id
         if (socket != null) {
           socket.close()
           socket = null
