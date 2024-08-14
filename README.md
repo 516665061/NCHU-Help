@@ -1,37 +1,50 @@
 # NCHU_HELP
 
-#### 介绍
-我的第一个项目，基于SpringBoot+Vue+ElementUI+Redis+MyBatis的前后端分离的校园跑腿平台
+### 介绍
 
-#### 软件架构
-软件架构说明
+该项目完整名称为NCHU校园帮，是基于南昌航空大学的线上办事这一背景开发的，目前具有以下功能模块：
 
+校园市场
+校园论坛
+失物招领
+校园跑腿
 
-#### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+本项目完全免费开源，助力各位完成毕设和学习，禁止倒卖出售！！！
 
 
-#### 特技
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+### 软件架构
+项目设计以下技术：
+#### 后端
+Springboot
+mybatis
+
+#### 前端
+VUE
+Element-ui
+
+#### 中间件
+redis
+
+
+### 安装教程
+
+1. 下载本项目的完整源码
+2. 导入工程，配置数据库
+3. 修改配置文件信息
+4. 启动redis服务（不启用评论不会加载，其他功能正常）
+5. 运行成功
+
+### 使用说明
+
+1. 项目简单，没什么说明的
+2. 如果发现项目上有任何问题可以联系我
+3. 项目能正常部署到服务器
+
+### 联系方式
+有任何问题可以联系我
+#### QQ
+![img.png](img.png)
+#### 微信
+![img_1.png](img_1.png)
+

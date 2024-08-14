@@ -2,7 +2,7 @@ package com.example.controller;
 
 /**
  * 功能
- * 作者：封延民
+ * 作者：荒
  * 日期：2023/12/10 13:03
  */
 import com.example.common.Result;

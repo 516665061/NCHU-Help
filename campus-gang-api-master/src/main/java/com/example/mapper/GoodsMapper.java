@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Update;
 import java.util.List;
 /**
  * 功能: 操作goods相关数据接口
- * 作者：封延民
+ * 作者：荒
  * 日期：2024/3/22 8:15
  */
 public interface GoodsMapper {

@@ -1,36 +1,43 @@
 # NCHU_HELP
 
-#### Description
-我的第一个项目，基于SpringBoot+Vue+ElementUI+Redis+MyBatis的前后端分离的校园跑腿平台
+### Description
+The full name of the project is NCHU Campus Gang, which is developed based on the background of Nanchang Hangkong University's online service, and currently has the following functional modules:
 
+Campus Market
+Campus Forum
+Lost & Found
+Campus errands
+
+This project is completely free and open-source, helping you to complete the design and learning, and prohibits reselling!!
 #### Software Architecture
-Software architecture description
+The project designs the following technologies:
+#### back end
+Springboot
+mybatis
 
-#### Installation
+#### Front
+VUE
+Element-ui
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+#### Middleware
+redis
+### Installation
 
-#### Instructions
+1. Download the full source code for this project
+2. Import the project and configure the database
+3. Modify the profile information
+4. Start Redis service (comments will not be loaded if not enabled, other functions are normal)
+5. The run was successful
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+### Instructions
 
-#### Contribution
+1. The project is simple, nothing to say
+2. If you find any problems with the project, you can contact me
+3. The project can be deployed to the server normally
 
-1.  Fork the repository
-2.  Create Feat_xxx branch
-3.  Commit your code
-4.  Create Pull Request
-
-
-#### Gitee Feature
-
-1.  You can use Readme\_XXX.md to support different languages, such as Readme\_en.md, Readme\_zh.md
-2.  Gitee blog [blog.gitee.com](https://blog.gitee.com)
-3.  Explore open source project [https://gitee.com/explore](https://gitee.com/explore)
-4.  The most valuable open source project [GVP](https://gitee.com/gvp)
-5.  The manual of Gitee [https://gitee.com/help](https://gitee.com/help)
-6.  The most popular members  [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+### Contact
+If you have any questions, you can contact me
+#### QQ
+![img.png](img.png)
+#### Wechat
+![img_1.png](img_1.png)

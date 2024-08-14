@@ -2,7 +2,7 @@ package com.example.entity;
 
 /**
  * 功能：聊天组
- * 作者：封延民
+ * 作者：荒
  * 日期：2024/4/1 21:44
  */
 public class ChatGroup {

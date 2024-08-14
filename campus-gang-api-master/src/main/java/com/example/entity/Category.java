@@ -2,7 +2,7 @@ package com.example.entity;
 import java.io.Serializable;
 /**
  * 功能: 分类
- * 作者：封延民
+ * 作者：荒
  * 日期：2024/3/22 8:56
  */
 

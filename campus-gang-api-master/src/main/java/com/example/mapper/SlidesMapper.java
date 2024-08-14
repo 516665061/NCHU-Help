@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * 功能
- * 作者：封延民
+ * 作者：荒
  * 日期：2024/2/22 22:44
  */
 public interface SlidesMapper {

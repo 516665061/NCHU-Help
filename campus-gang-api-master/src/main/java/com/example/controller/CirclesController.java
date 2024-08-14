@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 import java.util.List;
 /**
  * 功能：圈子前端操作接口
- * 作者：封延民
+ * 作者：荒
  * 日期：2024/3/22 11:56
  */
 @RestController
