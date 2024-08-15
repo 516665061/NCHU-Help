@@ -1,13 +1,52 @@
 # NCHU_HELP
 
 ### Description
-The full name of the project is NCHU Campus Gang, which is developed based on the background of Nanchang Hangkong University's online service, and currently has the following functional modules:
+The full name of the project is NCHU Campus Gang, which is developed based on the background of Nanchang Hangkong University's online service
 
-Campus Market
-Campus Forum
-Lost & Found
-Campus errands
+#### Functional modules
+1. Campus Market
+2. Campus Forum
+3. Lost & Found
+4. Campus errands
 
+##### Diagram of the functional modules of the project
+![img_28.png](img_28.png)
+
+##### Project architecture diagram
+![img_29.png](img_29.png)
+
+#### Roles
+1. Administrators
+2. Auditors
+3. Users
+4. Rider (User Application)
+
+#### Screenshot of the project section
+##### Sign up for the login screen
+![img_2.png](img_2.png)
+![img_3.png](img_3.png)
+##### Admin side
+![img_20.png](img_20.png)
+![img_21.png](img_21.png)
+![img_22.png](img_22.png)
+![img_23.png](img_23.png)
+![img_24.png](img_24.png)
+##### Client
+![img_14.png](img_14.png)
+![img_15.png](img_15.png)
+![img_25.png](img_25.png)
+![img_16.png](img_16.png)
+![img_26.png](img_26.png)
+![img_17.png](img_17.png)
+![img_18.png](img_18.png)
+![img_27.png](img_27.png)
+![img_19.png](img_19.png)
+##### Auditor's end
+I don't want to intercept it, so I look at it myself, it's similar to the administrator's side
+
+##### Register for the login screen
+![img_2.png](img_2.png)
+![img_3.png](img_3.png)
 This project is completely free and open-source, helping you to complete the design and learning, and prohibits reselling!!
 #### Software Architecture
 The project designs the following technologies:
